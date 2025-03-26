@@ -87,6 +87,8 @@ xxca
 #lets try the whole shebang again
 
 
+### EXAMINING THE DATA AND TESTING FOR NORMALITY #####
+
 plot(xxca)
 plot(clr(xxca))
 plot(ilr(xxca))
@@ -134,12 +136,60 @@ plot(cxxca)
 pairs(cxxca, lower.panel = panel.qq) #looks better
 mvnorm.etest(cxxca, R = 310) #complete multivariate test, still not normal (test should be acomp and not transformed) 
 #hopefully once i seperate out my date by treatment and timepoint, it will be normal
+# from the qqnorm plots though it looks normal enough for what I want to do tbh
 
+#according to the book, scaling is often used to compare subcompositions, but centering is used when date is often squashed into one corner of the simplex, which is what we had 
 
+#### DESCRIPTIVE STATS #####
+#from here on everything needs to be an acomp object, i think
 
+#variance
+mvar(cxxca)
 
+#metric standard deviation
+msd(cxxca)
 
+#variation matrix
+variation(cxxca)
 
+summary(cxxca)
+#mean.ratio is the geometric mean of the ratios and can be interpreted as a central value of each pairwise ratio
 
+#boxplot of pairwise ration
+boxplot(cxxca)
 
+#I'm gonna skip the sections on predictions and confidence regions as I dont think they will be relevant to me 
 
+#plotting ternary diagrans with the margin call
+plot(xxca, margin = "rcomp") #doesnt do anything cause i only have 3 variables but will be useful for the x1000s
+
+###### LINEAR MODEL TIME #######
+
+#I will only be following the sections on compositions as dependant variables, for obvious reasons
+
+#Defining the independent and dependant variables
+Y = cxxca #centered and cleaned composition from above
+X1 = BD100s$TempTreat
+X2 = BD100s$Timepoint
+X3 = BD100s$Treatment
+
+#for all of these, I need to remove the same line of data as I did above: 
+X1 <- X1[-c(56)]
+X2 <- X2[-c(56)]
+X3 <- X3[-c(56)]
+
+#fix an issue with X2
+X2 <- replace(X2, X2 == 17, 7) #okay that worked
+
+#I will also need to convert these to factors (and check their orders)
+X1 <- as.factor(X1)
+X2 <- as.factor(X2)
+X3 <- as.factor(X3)
+
+#checking the levels orders
+levels(X1)
+levels(X2) 
+levels(X3)
+#all good
+
+#End for today, at 5.3.1.3 in the book
