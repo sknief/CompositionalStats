@@ -193,3 +193,156 @@ levels(X3)
 #all good
 
 #End for today, at 5.3.1.3 in the book
+
+#Back to it on the 29th
+#all of my predictors are factors, we we'll use colorcoding for the plots
+opar = par(xpd=NA,no.readonly=TRUE)
+plot(Y,pch=c(3,20)[X3],col=c("blue","green","red")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+legend(x=0.85,y=0.65,abbreviate(levels(X3), minlength=1), pch=c(3,20)) #legend for X3
+legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("blue","green","red"),yjust=0) #legend for X1
+
+#plot is obviously not a set of a bunch of triangles, only one cause we only have 3 variables, but it works well 
+
+#trying a different plot
+boxplot(Y,X3,notch=TRUE) #boxplot of the data
+
+#just out curiosity, lets see do the first plot again with time instead of vax
+plot(Y,pch=c(3,20, 8)[X1],col=c("blue","green","red", "black")[X2]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+legend(x=0.85,y=0.65,abbreviate(levels(X1), minlength=1), pch=c(3,20, 8)) #legend for X3
+legend(x=0.75,y=0.65,abbreviate(levels(X2), minlength=1), pch=20,col=c("blue","green","red", "black"),yjust=0)
+#looks awful 
+
+## Regression time!! OR rather, ANOVA TIME
+
+#For anovas, the book recommends using the ilr transformation, so we will do that
+#the book also recommends setting the contrast to be the treatment level 
+#tbh i still dont know what contrasts are, but i trust the book
+
+#setting the contrasts
+contrasts(X3) <- "contr.treatment"#using the vaccine variable for this
+
+#making a model and getting its parameters (intercept, slope, mean, sigma (variance))
+(model = lm(ilr(Y) ~ X3)) #model
+(a = ilrInv(coef(model)[1,],orig=Y)) #backtransforming the intercept
+(b = ilrInv(rbind(0,coef(model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
+#the above output shows the increase between levels of the treatment variable
+(mu = a + b)
+(Sigma=ilrvar2clr(var(model)))
+
+#plotting the means and the ellipses based on the model data
+plot(mu,pch=20, col= c("blue","green"))
+plot(Y,pch=".",add=TRUE)
+ellipses(mu[1,],Sigma,2, col = "blue")
+ellipses(mu[2,],Sigma,2, col = "green")
+legend(x=0.75,y=0.65,abbreviate(levels(X3), minlength=1), pch=20,col=c("blue","green"),yjust=0)
+#this is a plot of the means of the different treatments, with the ellipses showing the 95% confidence intervals
+
+#actually running a proper ANOVA
+anova(model) #highly significant??? even though I would not have guessed that from the above graph
+
+##Full Model
+#time to put in all predictor variables - but I admit i'm not sure if this model is the most useful
+(fullModel = lm(ilr(Y) ~ X1 + X2 + X3)) #model 
+#the first level of each factor is assumed to be zero
+#the same output can also be gotten with
+coef(fullModel)
+#out of curiosity, lets see the anova
+anova(fullModel)
+# ALL SIGNIFICANT??????
+
+#the above model output is all ilr transformed, so lets backtransform
+(coefs <- ilrInv(coef(fullModel),orig=Y))
+barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients, which I think is honestly not that useful
+
+#if we display the uncertainty of these parameters, we need to estimate their variance
+vcov(fullModel) #variance-covariance matrix, its kinda big
+#then we can plot the variance and uncertainty
+vars <- vcovAcomp(fullModel)
+dim(vars)
+alpha=0.05
+plot(coefs,pch=as.character(1:nrow(coefs)))
+plot(coefs-coefs,pch=20,add=TRUE)
+for(i in 1:nrow(coefs)){
+  ellipses(acomp(coefs[i,,drop=FALSE]),
+  ilrvar2clr(vars[,,i,i]),
+  r=ConfRadius(model,1-alpha),
+  col="gray")
+}
+par(xpd=FALSE)
+#  A variable may be removed from the model if the confidence ellipse around its parameter always contains the barycenter of the composition. - so according to this graph, X1Fluc is not different from the general mean, but Opt and Cold must be different from each other at least (given the significant result earlier)
+
+#another plot option: the biplot
+#from the book: Each arrow represents a one-unit change in the direction of each explanatory variable. Projecting these arrows onto the links between the compositional variables, we obtain the change in the response composition predicted by the linear model
+
+#I cannot get this code to work, so I will skip it for now
+B = clr(coefs[-1,])
+svdlm = svd(B)
+
+# Verify dimensions
+print(dim(svdlm$u))  # Should be 6x3
+print(length(svdlm$d))  # Should be 3
+print(dim(svdlm$v))  # Should be 3x3
+
+opar <- par(xpd=NA, mar=c(2,2,0,0))
+
+# Assuming coloredBiplot expects two matrices of the same number of columns
+coloredBiplot(svdlm$u, y = (svdlm$v %*% diag(svdlm$d)), scale = 0, xarrows = TRUE, ypch = 4, ynames = colnames(B), xnames = rownames(B))
+
+sum(svdlm$d[1:2]^2)/sum(svdlm$d^2)
+
+# Reset the plot parameters to original
+par(opar)
+
+## end skip 
+
+
+#the next suggestion is to test for model redundancy by making a bunch of differently ordered models and seeing if the last variable is still significant
+model1 = lm(ilr(Y) ~ X3 + X2 + X1)
+anova(model1)
+model2 = lm(ilr(Y) ~ X3 + X1 + X2)
+anova(model2)
+model3 = lm(ilr(Y) ~ X2 + X3 + X1)
+anova(model3)
+#all looks good. didnt do any multiplicative models but thats a worry for the legit runs
+
+##More diagnostics
+#residuals
+Resid = ilrInv(resid(fullModel),orig=Y)
+plot(Resid, cex=0.5)
+title("Ternary Diagrams of Residuals",outer=TRUE,line=-1)
+
+boxplot(Resid) #decent amount of outliers
+title("Boxplots of Residuals",outer=TRUE,line=-1)
+
+#QQ plot
+qqnorm(Resid) #WOAH looking weird
+
+#we already dia whole bunch of diagnostics earlier though, so not quite sure why its popping up now again
+
+#homoschedascity
+Pred = ilrInv(predict(fullModel),orig=Y)
+
+opar <- par(oma=c(3,3,0,0),mar=c(4,4,1,0))
+pairwisePlot(clr(Pred),clr(Resid))
+mtext(text=c("predicted values (clr)","residuals (clr)"),
+        side=c(1,2),at=0.5,line=2,outer=TRUE)
+par(opar)
+#honestly pretty ok?
+
+#color-coordinate by group
+opar <- par(oma=c(0,0,2,0),mar=c(4,4,1,0))
+pairwisePlot(clr(Pred),clr(Resid),col=as.numeric(X1))
+legend(locator(1),levels(X1),col=as.numeric(1:3),pch=1,xpd=NA)
+par(opar)
+# ehhh still ok
+
+#last step of model optimisation: testing an interactive model
+#i will not go thru the whole shebang but ill make one base model
+model4 = lm(ilr(Y) ~ X1 * X2 * X3)
+anova(model4)
+#my laptop has been thinking about this model for a looong time.... not good.
+
+#We are at the end of Ch 5 now, so multivariate stuff will happen tmrw
+#once i am done with this script, I'll make a cleaner base / instructional one about the process, and then the relevant ones for my research question 
+#add an export to pdf function like Liss had been using
+#should be able to finish this tmrw? 
