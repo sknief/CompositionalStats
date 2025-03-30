@@ -122,7 +122,7 @@ xxcc <- xxcc[-c(56),]
 xxcc
 
 ccompMultinomialGOF.test(xxcc, R = 310) #not multinomially distributed, no use in using ccomp
- 
+
 ccompPoissonGOF.test(xxcc) # not a multi-Poission distribution
 
 #next logical step is to center the data and try again? 
