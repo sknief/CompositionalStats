@@ -332,7 +332,7 @@ par(opar)
 #color-coordinate by group
 opar <- par(oma=c(0,0,2,0),mar=c(4,4,1,0))
 pairwisePlot(clr(Pred),clr(Resid),col=as.numeric(X1))
-legend(locator(1),levels(X1),col=as.numeric(1:3),pch=1,xpd=NA)
+legend(locator(1),levels(X1),col=as.numeric(1:3),pch=1,xpd=NA) #starts a click to place mechanism for the legend? super neat honestly
 par(opar)
 # ehhh still ok
 
@@ -341,8 +341,80 @@ par(opar)
 model4 = lm(ilr(Y) ~ X1 * X2 * X3)
 anova(model4)
 #my laptop has been thinking about this model for a looong time.... not good.
+# turns out that issue wasnt really about the anova, but the locator from above
 
 #We are at the end of Ch 5 now, so multivariate stuff will happen tmrw
 #once i am done with this script, I'll make a cleaner base / instructional one about the process, and then the relevant ones for my research question 
 #add an export to pdf function like Liss had been using
 #should be able to finish this tmrw? 
+
+### CH 6 MULTIVARIATE STATS
+#Back to basics: multivariate statistics refers to the analysis of data with more than one dependent variable
+#compositions are multivariate by nature so these methods apply too
+#so i guess we can either treat a single composition as a Y-variable, when ilr transformed, which then makes the analysis akin to univariate analysis and we can use anovas and linear regressions like above
+#or we can treat the composition as multiple Y variables, and work with multivariate analysis methods
+
+#First, more biplot attempts
+(cxxca) #my composition, already as an acomp object
+pccxxca <- princomp(cxxca) #This function returns a princomp object, containing the full result of a PCA on the covariance matrix of the clr-transformed datase
+pccxxca #this is the PCA object
+plot(pccxxca) #this is the scree plot, showing the proportion of variance explained by each PC
+#hideous, but informative
+
+sum(pccxxca$sdev[1:2]^2)/mvar(cxxca) #this is the proportion of variance explained by the biplot (first two PCs), all of it apparently
+
+opar <- par(mar=c(1,1,1,1))
+dots = rep(".",times=nrow(cxxca))
+biplot(pccxxca, xlabs=dots) #my arrows seem exactly evenly split apart... but i dont think thats indicative of an issue necessarily?
+par(opar)
+
+#maybe the above is because i've been using centered data (cxxca) and not the originaldata (xxca) - lets try that
+
+pcxxca <- princomp(xxca)
+plot(pcxxca) #looks identical
+biplot(pcxxca, xlabs=dots) #looks identical
+#theory debunked i guess
+
+
+#interesting how doing a PCA on a composition yields n-1 Pcs and not an equal number like it does on the normal dataset. this is the same in the book examples tho
+
+##
+
+#PCA is used to get rid of unimportant variables, and to reduce the dimensionality of the data, and is a predominantly exploratory tool - none of our variables should be gotten rid of, so we will skip this
+#(but maybe the code is worth playing with for the paper / completions sake)
+
+##
+
+#I have never used cluster analysis before, and I do not think it relevant either
+
+##
+
+#Discriminant analysis (LDA) is more useful to us and is a method that actually links a predictor to the responses
+#it is used to classify observations into groups based on their predictor variables
+#it is a supervised method, so we need to know the groupings of the observations, 
+#it does not show the relationship between the predictors and the responses, but rather the relationship between the responses and the grouping variable, i.e. how well the grouping variable can separate the responses / influence the distance between the responses collected
+#need to review the linked hypotheses and interpretation of results
+
+#defining my group of interest
+Temp = X1
+mean(xxca) #trying this with non centered data because it is not centered in the book
+table(Temp) #the groups are not equal in size, but that is okay
+library(MASS)
+res = lda( x=data.frame(ilr(xxca)), grouping=Temp )
+res
+
+#backtransforming from ilr coordinates to our data scales
+ilrInv(res$means, orig=xxca)
+
+V = ilrBase(xxca) 
+rownames(V)= colnames(xxca)
+t(ilr2clr(t(res$scaling), V=V)) #not 100% sure what this is showing me, but it is showing me something
+
+#fun plot time
+grint = as.integer(Temp)
+pairs(res, abbr=1, col=(1:4)[grint], cex=1.2)
+#cool looking graph, but no interesting results from it visually
+
+##DONE WORKING THRU THE BOOK!! YIPPEEEEE
+
+#I will now make a new script with the relevant code for my research question, and then a base script for the process
