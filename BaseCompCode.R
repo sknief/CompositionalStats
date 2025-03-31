@@ -49,8 +49,16 @@ plot(clr(xxca)) #clr transformation (central log)
 plot(ilr(xxca)) #ilr transformation (isometric log) (check)
 
 
-#### Step Four: Setting up an export PDF for all output and assumptions
-PDF_Ident <- "BaseCompAnalysis_" #this is to identify the output from your specific run or hypothesis
+#### Step Four: Setting up exports and the whole code
+#All variables, output and models start with the term "Spooky" - you need to ctrl + f and replace this term with a keyword relevant to your current research question
+
+#Let's save both of these pieces of information
+researchQuestion <- "Enter Research Q" #keep brief
+keyword <- "Spooky" #Spooky by default
+
+
+#we will use the keyword in the export pdf titles as well
+PDF_Ident <- paste0("BaseCompAnalysis_", keyword, "_") #this is to identify the output from your specific run or hypothesis
 pdf(file = paste(PDF_Ident, "1.pdf", sep = "_"))
 
 #Let's give the PDF some basic text, some info about scales for example
@@ -69,11 +77,16 @@ text(x=.5, y=.5, ScaleBody3)
 text(x=.5, y=.4, ScaleBody4)
 text(x=.5, y=.3, ScaleBody5)
 
+#we can also note our research question and keyword
+plot.new()
+text(x=.5, y=1, keyword, font=3, cex=2, col="blue")
+text(x=.5, y=.7, researchQuestion)  
+
 dev.off() #this closes the pdf file (shuts off the device)
+#going forward, most plots will have the export to pdf text at the top and bottom of the relevant section, but commented out so that you can visualize plots in R first
 
-#bit of a silly exercise but a good way to check that the pdf export mechanism works
 
-#### Step Five: Testing for normality + other assumptions
+### Step Five: Testing for normality + other assumptions (DATA diagnostics)
 # First, testing for normality (normal distribution)
 mvnorm.etest(ilr(xc)) #complete multivariate test
 acompNormalGOF.test(xc, R = 311) #alternative multivariate test, works on non-transformed data
@@ -133,7 +146,7 @@ boxplot(cxxca)
 plot(xxca, margin = "rcomp") 
 
 
-#### Step Seven: Linear Regression
+#### Step Seven: Univariate Approaches (Treating the composition as one singular Y variable)
 #Defining the independent and dependant variables
 Y = cxxca #centered and cleaned composition from above
 X1 = BD100s$TempTreat
@@ -186,11 +199,106 @@ legend(x=0.75,y=0.65,abbreviate(levels(X3), minlength=1), pch=20,col=c("blue","g
 
 anova(model) #actually running the anova
 
-#trying different models
-##Full Model
-(fullModel = lm(ilr(Y) ~ X1 + X2 + X3)) #model 
-#the first level of each factor is assumed to be zero
+# Including mutliple predictors
+(fullModel = lm(ilr(Y) ~ X1 + X2 + X3)) #model, the first level of each factor is assumed to be zero
 coef(fullModel) #parameters
 anova(fullModel)
 
-# Stopping on line 253 in the playcode for tonight
+# the above model output is all ilr transformed, so lets backtransform
+(coefs <- ilrInv(coef(fullModel),orig=Y))
+barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients (which I think is honestly not that useful)
+
+#determining variances and plotting them as ellipses around the estimated parameters
+vcov(fullModel) #variance-covariance matrix
+vars <- vcovAcomp(fullModel)
+dim(vars)
+alpha=0.05
+
+#plotting the variance
+plot(coefs,pch=as.character(1:nrow(coefs)))
+plot(coefs-coefs,pch=20,add=TRUE)
+for(i in 1:nrow(coefs)){
+  ellipses(acomp(coefs[i,,drop=FALSE]),
+           ilrvar2clr(vars[,,i,i]),
+           r=ConfRadius(model,1-alpha),
+           col="gray")
+}
+par(xpd=FALSE)
+#  A variable may be removed from the model if the confidence ellipse around its parameter always contains the barycenter of the composition.
+
+#the next suggestion is to test for model redundancy by making a bunch of differently ordered models and seeing if the last variable is still significant
+model1 = lm(ilr(Y) ~ X3 + X2 + X1)
+anova(model1)
+model2 = lm(ilr(Y) ~ X3 + X1 + X2)
+anova(model2)
+model3 = lm(ilr(Y) ~ X2 + X3 + X1)
+anova(model3)
+
+#we can also look at multiplicative models
+model4 = lm(ilr(Y) ~ X1 * X2 * X3)
+anova(model4)
+
+
+## Checking the assumptions of the model (MODEL Diagnostics)
+#This should occur before the model is run, and i'll move the code later when I review it again
+#normally distributed residuals
+Resid = ilrInv(resid(fullModel),orig=Y)
+plot(Resid, cex=0.5)
+title("Ternary Diagrams of Residuals",outer=TRUE,line=-1)
+
+boxplot(Resid) #also reveals outliers
+title("Boxplots of Residuals",outer=TRUE,line=-1)
+
+#QQ plot (also normally distributed residuals)
+qqnorm(Resid) 
+
+#homoschedascity (equal variance)
+Pred = ilrInv(predict(fullModel),orig=Y)
+opar <- par(oma=c(3,3,0,0),mar=c(4,4,1,0))
+pairwisePlot(clr(Pred),clr(Resid))
+mtext(text=c("predicted values (clr)","residuals (clr)"),
+      side=c(1,2),at=0.5,line=2,outer=TRUE)
+par(opar)
+
+#color-coordinate the above diagram by group
+opar <- par(oma=c(0,0,2,0),mar=c(4,4,1,0))
+pairwisePlot(clr(Pred),clr(Resid),col=as.numeric(X1))
+legend(locator(1),levels(X1),col=as.numeric(1:3),pch=1,xpd=NA) #starts a click to place mechanism for the legend
+par(opar)
+
+#### Step Eight: Multivariate Approaches (treating the composition as a collection of multiple Ys)
+
+##PCA:
+pccxxca <- princomp(cxxca) #This function returns a princomp object, containing the full result of a PCA on the covariance matrix of the clr-transformed datase, and requires an acomp object
+pccxxca #this is the PCA object
+
+#plotting the scree plot
+plot(pccxxca) #this is the scree plot, showing the proportion of variance explained by each PC
+#hideous, but informative
+
+#plotting the biplot
+sum(pccxxca$sdev[1:2]^2)/mvar(cxxca) #this is the proportion of variance explained by the biplot (first two PCs)
+opar <- par(mar=c(1,1,1,1))
+dots = rep(".",times=nrow(cxxca))
+biplot(pccxxca, xlabs=dots)
+par(opar)
+
+##LDA (Linear Discriminant Analysis)
+#defining the group of interest
+Group = X1
+mean(xxca) #use non-centered data
+table(Temp) #okay if groups are not equal
+res = lda( x=data.frame(ilr(xxca)), grouping=Group )
+res
+
+#backtransforming from ilr coordinates to our data scales
+ilrInv(res$means, orig=xxca)
+
+# Variance? Maybe?
+V = ilrBase(xxca) 
+rownames(V)= colnames(xxca)
+t(ilr2clr(t(res$scaling), V=V)) #not 100% sure what this is showing me, but it is showing me something
+
+#Showing the original groups and their alignment across the LDAs
+grint = as.integer(Temp)
+pairs(res, abbr=1, col=(1:4)[grint], cex=1.2)
