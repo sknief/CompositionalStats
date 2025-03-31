@@ -55,6 +55,7 @@ dev.off() #this closes the pdf file (shuts off the device)
 #going forward, most plots will have the export to pdf text at the top and bottom of the relevant section, but commented out so that you can visualize plots in R first
 
 
+
 #### Step Two: Data Import
 #$ [Insert Data Here]
 DATA <- as.dataframe(yourdatahere)
@@ -65,10 +66,21 @@ Spooky_acomp = acomp(DATASET, c('Y1', 'Y2', 'Y3'))
 Spooky_acomp
 
 #explore the composition
-plot(Spooky_acomp)
-plot(clr(Spooky_acomp)) #clr transformation (central log)
-plot(ilr(Spooky_acomp)) #ilr transformation (isometric log) (check)
 
+#PDF export code
+pdf(file = paste(PDF_Ident, "2.pdf", sep = "_"))
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Graphical Exploration of Composition")
+text(5, 7, Keyword)
+
+plot(Spooky_acomp)
+title("Untransformed Composition",outer=TRUE,line=-1)
+plot(clr(Spooky_acomp)) #clr transformation (central log)
+title("CLR-transformed Composition",outer=TRUE,line=-1)
+plot(ilr(Spooky_acomp)) #ilr transformation (isometric log) (check)
+title("ILR-transformed Composition",outer=TRUE,line=-1)
+
+dev.off()
 
 #### Step Three: Checking for and dealing with missing values
 # notice: you need to work with an acomp object for the following code
@@ -81,10 +93,21 @@ Spooky_acomp[is.na(Spooky_acomp)] <- BDL_MNAR_REPLACE #replace NAs
 missingSummary(Spooky_acomp) # final check
 
 #explore the composition again
-plot(Spooky_acomp)
-plot(clr(Spooky_acomp)) #clr transformation (central log)
-plot(ilr(Spooky_acomp)) #ilr transformation (isometric log) (check)
+#PDF code
+pdf(file = paste(PDF_Ident, "3.pdf", sep = "_"))
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Composition after treating missing values")
+text(5, 7, Keyword)
 
+
+plot(Spooky_acomp)
+title("Untransformed Composition",outer=TRUE,line=-1)
+plot(clr(Spooky_acomp)) #clr transformation (central log)
+title("CLR-transformed Composition",outer=TRUE,line=-1)
+plot(ilr(Spooky_acomp)) #ilr transformation (isometric log) (check)
+title("ILR-transformed Composition",outer=TRUE,line=-1)
+
+dev.off()
 
 
 
@@ -127,6 +150,22 @@ pairs(Spooky_centered_acomp, lower.panel = panel.qq)
 mvnorm.etest(Spooky_centered_acomp, R = 310) #complete multivariate test, 
 #according to the book, scaling is often used to compare subcompositions, but centering is used when date is often squashed into one corner of the simplex, which is what we had 
 
+#PDF export code for this section: 
+pdf(file = paste(PDF_Ident, "4.pdf", sep = "_"))
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Testing for normality and other assumptions")
+text(5, 7, Keyword)
+
+pairs(Spooky_acomp, lower.panel = panel.qq) #QQplots and histos
+title("Current Aitch. Composition",outer=TRUE,line=-1)
+Spooky_ccomp 
+title("Count Composition (ccomp)",outer=TRUE,line=-1)
+plot(Spooky_centered_acomp)
+title("Centered Aitch. Composition",outer=TRUE,line=-1)
+pairs(Spooky_centered_acomp, lower.panel = panel.qq)
+title("Centered Aitch. Composition",outer=TRUE,line=-1)
+
+dev.off()
 #### Step Six: Descriptive Statistics
 #variance
 mvar(Spooky_centered_acomp)
@@ -140,11 +179,21 @@ variation(Spooky_centered_acomp)
 summary(Spooky_centered_acomp)
 #mean.ratio is the geometric mean of the ratios and can be interpreted as a central value of each pairwise ratio
 
+#PDF export code 
+pdf(file = paste(PDF_Ident, "5.pdf", sep = "_"))
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Descriptive Stats")
+text(5, 7, Keyword)
+
 #boxplot of pairwise ration
 boxplot(Spooky_centered_acomp)
+title("Boxplot of pairwise ration",outer=TRUE,line=-1)
 
 #plotting ternary diagrans with the margin call
 plot(Spooky_acomp, margin = "rcomp") #(CHECK) that these need to be non-centered
+title("Boxplot of pairwise ration",outer=TRUE,line=-1)
+
+dev.off()
 
 
 #### Step Seven: Univariate Approaches (Treating the composition as one singular Y variable)
@@ -164,14 +213,23 @@ levels(X1)
 levels(X2) 
 levels(X3)
 
+
+pdf(file = paste(PDF_Ident, "6.pdf", sep = "_"))
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Univariate Approaches ()")
+text(5, 7, Keyword)
+
 #plotting the composition and color-coding/shape-coding by the factors
 opar = par(xpd=NA,no.readonly=TRUE)
 plot(Y,pch=c(3,20)[X3],col=c("blue","green","red")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
 legend(x=0.85,y=0.65,abbreviate(levels(X3), minlength=1), pch=c(3,20)) #legend for X3
 legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("blue","green","red"),yjust=0) #legend for X1
+title("Composition by factor",outer=TRUE,line=-1)
 
 boxplot(Y,X3,notch=TRUE) #boxplot of the data
+title("Composition against ...",outer=TRUE,line=-1)
 
+dev.off()
 
 ### ANOVAS and making the model
 #For anovas, the book recommends using the ilr transformation, so we will do that
@@ -189,12 +247,22 @@ contrasts(X3) <- "contr.treatment" #using the vaccine variable for this
 (mu = a + b) #mean
 (Sigma=ilrvar2clr(var(single_X_model))) #variance
 
+#PDF code
+pdf(file = paste(PDF_Ident, "7.pdf", sep = "_"))
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Multivariate Approaches (1 X, 1 Y)")
+text(5, 7, Keyword)
+
+
 #plotting the means and the variance ellipses based on the model data
 plot(mu,pch=20, col= c("blue","green"))
 plot(Y,pch=".",add=TRUE)
 ellipses(mu[1,],Sigma,2, col = "blue")
 ellipses(mu[2,],Sigma,2, col = "green")
 legend(x=0.75,y=0.65,abbreviate(levels(X3), minlength=1), pch=20,col=c("blue","green"),yjust=0)
+title("Means and Variances from ilr(Y)~X",outer=TRUE,line=-1)
+
+dev.off()
 
 # !!! Remember to check your anova and linear model assumptions at this point 
 
@@ -214,6 +282,13 @@ vcov(fullModel) #variance-covariance matrix
 vars <- vcovAcomp(fullModel)
 dim(vars)
 alpha=0.05
+
+
+#PDF code
+pdf(file = paste(PDF_Ident, "8.pdf", sep = "_"))
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Multivariate Approaches (PCA and LDA)")
+text(5, 7, Keyword)
 
 #plotting the variance
 plot(coefs,pch=as.character(1:nrow(coefs)))
@@ -303,3 +378,10 @@ t(ilr2clr(t(res$scaling), V=V)) #not 100% sure what this is showing me, but it i
 #Showing the original groups and their alignment across the LDAs
 grint = as.integer(Temp)
 pairs(res, abbr=1, col=(1:4)[grint], cex=1.2)
+
+##### Final Step: Turn all PDFs into one
+system("pdftk *pdf cat output combined.pdf")  
+
+combine_pdfs = function(path, output_pdf) {
+  system(sprintf("pdftk %s/*pdf cat output %s"), path, output_pdf)
+}
