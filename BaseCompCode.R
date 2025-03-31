@@ -18,38 +18,7 @@ library(MASS)
 library(plyr)
 library(dplyr)
 
-
-#### Step 2: Data Import
-#$ [Insert Data Here]
-#$ [Optional: Data Cleaning]
-
-# turn the composition into an acomp object
-xxca <- acomp(xxc)
-xxca
-
-#explore the composition
-plot(xxca)
-plot(clr(xxca)) #clr transformation (central log)
-plot(ilr(xxca)) #ilr transformation (isometric log) (check)
-
-
-#### Step Three: Checking for and dealing with missing values
-# notice: you need to work with an acomp object for the following code
-missingSummary(xxca) #table of missing values
-# we will use the imputation method of the book in order to deal with missing values, which is to replace them with the smallest non-zero value in the composition (NOT OG DATASET) 
-BDL_MNAR_REPLACE <- 0.001 #assign a value to replace BDL and MNARs
-xxca <- zeroreplace(xxca, BDL_MNAR_REPLACE) #replace zeros
-missingSummary(xxca) #check for missing values again
-xxca[is.na(xxca)] <- BDL_MNAR_REPLACE #replace NAs
-missingSummary(xxca) # final check
-
-#explore the composition again
-plot(xxca)
-plot(clr(xxca)) #clr transformation (central log)
-plot(ilr(xxca)) #ilr transformation (isometric log) (check)
-
-
-#### Step Four: Setting up exports and the whole code
+#### Step One: Setting up exports and the whole code
 #All variables, output and models start with the term "Spooky" - you need to ctrl + f and replace this term with a keyword relevant to your current research question
 
 #Let's save both of these pieces of information
@@ -77,7 +46,7 @@ text(x=.5, y=.5, ScaleBody3)
 text(x=.5, y=.4, ScaleBody4)
 text(x=.5, y=.3, ScaleBody5)
 
-#we can also note our research question and keyword
+# we can also note our research question and keyword
 plot.new()
 text(x=.5, y=1, keyword, font=3, cex=2, col="blue")
 text(x=.5, y=.7, researchQuestion)  
@@ -86,10 +55,43 @@ dev.off() #this closes the pdf file (shuts off the device)
 #going forward, most plots will have the export to pdf text at the top and bottom of the relevant section, but commented out so that you can visualize plots in R first
 
 
+#### Step Two: Data Import
+#$ [Insert Data Here]
+DATA <- as.dataframe(yourdatahere)
+#$ [Optional: Data Cleaning]
+
+# make a composition
+Spooky_acomp = acomp(DATASET, c('Y1', 'Y2', 'Y3'))
+Spooky_acomp
+
+#explore the composition
+plot(Spooky_acomp)
+plot(clr(Spooky_acomp)) #clr transformation (central log)
+plot(ilr(Spooky_acomp)) #ilr transformation (isometric log) (check)
+
+
+#### Step Three: Checking for and dealing with missing values
+# notice: you need to work with an acomp object for the following code
+missingSummary(Spooky_acomp) #table of missing values
+# we will use the imputation method of the book in order to deal with missing values, which is to replace them with the smallest non-zero value in the composition (NOT OG DATASET) 
+BDL_MNAR_REPLACE <- 0.001 #assign a value to replace BDL and MNARs
+Spooky_acomp <- zeroreplace(Spooky_acomp, BDL_MNAR_REPLACE) #replace zeros
+missingSummary(Spooky_acomp) #check for missing values again
+Spooky_acomp[is.na(Spooky_acomp)] <- BDL_MNAR_REPLACE #replace NAs
+missingSummary(Spooky_acomp) # final check
+
+#explore the composition again
+plot(Spooky_acomp)
+plot(clr(Spooky_acomp)) #clr transformation (central log)
+plot(ilr(Spooky_acomp)) #ilr transformation (isometric log) (check)
+
+
+
+
 ### Step Five: Testing for normality + other assumptions (DATA diagnostics)
 # First, testing for normality (normal distribution)
-mvnorm.etest(ilr(xc)) #complete multivariate test
-acompNormalGOF.test(xc, R = 311) #alternative multivariate test, works on non-transformed data
+mvnorm.etest(ilr(Spooky_acomp)) #complete multivariate test
+acompNormalGOF.test(Spooky_acomp, R = 311) #alternative multivariate test, works on non-transformed data
 
 #exploring through graphs
 #better panel making code from stackoverflow
@@ -101,57 +103,56 @@ panel.qq <- function(x, y, ...) {
 }
 
 #QQplots
-pairs(xxca, lower.panel = panel.qq) #use acomp object for these
+pairs(Spooky_acomp, lower.panel = panel.qq) #use acomp object for these
 
 
 #Alternative tests to check if a count comp distribution fits better 
-xxcc <- ccomp(xxc)
-xxcc
-plot(xxcc) #explore the composition
+Spooky_ccomp <- ccomp(DATASET, c('Y1', 'Y2', 'Y3'))
+Spooky_ccomp
+Spooky_ccomp #explore the composition
 
-#Alternative alternatives: multinomial and multi-poisson
-ccompMultinomialGOF.test(xxcc, R = 310) #not multinomially distributed, no use in using ccomp
-ccompPoissonGOF.test(xxcc) # not a multi-Poission distribution
+#Alternative ccomp distributions: multinomial and multi-poisson
+ccompMultinomialGOF.test(Spooky_ccomp, R = 310) #not multinomially distributed, no use in using ccomp
+ccompPoissonGOF.test(Spooky_ccomp) # not a multi-Poission distribution
 
 #If composition failed normality test, we can try to transform or center
-#centering the data
-mean(xxca)
-cxxca <- xxca - mean(xxca) #centering by subtracting the mean
-mean(cxxca) #check if the centered mean is the neutral element
+#centering the (acomp)
+mean(Spooky_acomp)
+Spooky_centered_acomp <- Spooky_acomp - mean(Spooky_acomp) #centering by subtracting the mean
+mean(Spooky_centered_acomp) #check if the centered mean is the neutral element
 
 #examining centered data
-plot(cxxca)
-pairs(cxxca, lower.panel = panel.qq) #looks better
-mvnorm.etest(cxxca, R = 310) #complete multivariate test, 
-
+plot(Spooky_centered_acomp)
+pairs(Spooky_centered_acomp, lower.panel = panel.qq)
+mvnorm.etest(Spooky_centered_acomp, R = 310) #complete multivariate test, 
 #according to the book, scaling is often used to compare subcompositions, but centering is used when date is often squashed into one corner of the simplex, which is what we had 
 
 #### Step Six: Descriptive Statistics
 #variance
-mvar(cxxca)
+mvar(Spooky_centered_acomp)
 
 #metric standard deviation
-msd(cxxca)
+msd(Spooky_centered_acomp)
 
 #variation matrix
-variation(cxxca)
+variation(Spooky_centered_acomp)
 
-summary(cxxca)
+summary(Spooky_centered_acomp)
 #mean.ratio is the geometric mean of the ratios and can be interpreted as a central value of each pairwise ratio
 
 #boxplot of pairwise ration
-boxplot(cxxca)
+boxplot(Spooky_centered_acomp)
 
 #plotting ternary diagrans with the margin call
-plot(xxca, margin = "rcomp") 
+plot(Spooky_acomp, margin = "rcomp") #(CHECK) that these need to be non-centered
 
 
 #### Step Seven: Univariate Approaches (Treating the composition as one singular Y variable)
 #Defining the independent and dependant variables
-Y = cxxca #centered and cleaned composition from above
-X1 = BD100s$TempTreat
-X2 = BD100s$Timepoint
-X3 = BD100s$Treatment
+Y = Spooky_centered_acomp #centered and cleaned composition from above
+X1 = DATA$TempTreat
+X2 = DATA$Timepoint
+X3 = DATA$Treatment
 
 #convert these to factors (and check their orders) if needed
 X1 <- as.factor(X1)
@@ -181,12 +182,12 @@ boxplot(Y,X3,notch=TRUE) #boxplot of the data
 contrasts(X3) <- "contr.treatment" #using the vaccine variable for this
 
 #making a model and getting its parameters (intercept, slope, mean, sigma (variance))
-(model = lm(ilr(Y) ~ X3)) #model
-(a = ilrInv(coef(model)[1,],orig=Y)) #backtransforming the intercept
-(b = ilrInv(rbind(0,coef(model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
+(single_X_model = lm(ilr(Y) ~ X3)) #model
+(a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
+(b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
 #the above output shows the increase between levels of the treatment variable
 (mu = a + b) #mean
-(Sigma=ilrvar2clr(var(model))) #variance
+(Sigma=ilrvar2clr(var(single_X_model))) #variance
 
 #plotting the means and the variance ellipses based on the model data
 plot(mu,pch=20, col= c("blue","green"))
@@ -197,7 +198,7 @@ legend(x=0.75,y=0.65,abbreviate(levels(X3), minlength=1), pch=20,col=c("blue","g
 
 # !!! Remember to check your anova and linear model assumptions at this point 
 
-anova(model) #actually running the anova
+anova(single_X_model) #actually running the anova
 
 # Including mutliple predictors
 (fullModel = lm(ilr(Y) ~ X1 + X2 + X3)) #model, the first level of each factor is assumed to be zero
@@ -235,8 +236,8 @@ model3 = lm(ilr(Y) ~ X2 + X3 + X1)
 anova(model3)
 
 #we can also look at multiplicative models
-model4 = lm(ilr(Y) ~ X1 * X2 * X3)
-anova(model4)
+multiModel = lm(ilr(Y) ~ X1 * X2 * X3)
+anova(multiModel)
 
 
 ## Checking the assumptions of the model (MODEL Diagnostics)
@@ -269,34 +270,34 @@ par(opar)
 #### Step Eight: Multivariate Approaches (treating the composition as a collection of multiple Ys)
 
 ##PCA:
-pccxxca <- princomp(cxxca) #This function returns a princomp object, containing the full result of a PCA on the covariance matrix of the clr-transformed datase, and requires an acomp object
-pccxxca #this is the PCA object
+Spooky_PCA <- princomp(Spooky_centered_acomp) #This function returns a princomp object, containing the full result of a PCA on the covariance matrix of the clr-transformed datase, and requires an acomp object
+Spooky_PCA #this is the PCA object
 
 #plotting the scree plot
-plot(pccxxca) #this is the scree plot, showing the proportion of variance explained by each PC
+plot(Spooky_PCA) #this is the scree plot, showing the proportion of variance explained by each PC
 #hideous, but informative
 
 #plotting the biplot
-sum(pccxxca$sdev[1:2]^2)/mvar(cxxca) #this is the proportion of variance explained by the biplot (first two PCs)
+sum(Spooky_PCA$sdev[1:2]^2)/mvar(Spooky_centered_acomp) #this is the proportion of variance explained by the biplot (first two PCs)
 opar <- par(mar=c(1,1,1,1))
-dots = rep(".",times=nrow(cxxca))
-biplot(pccxxca, xlabs=dots)
+dots = rep(".",times=nrow(Spooky_centered_acomp))
+biplot(Spooky_PCA, xlabs=dots)
 par(opar)
 
 ##LDA (Linear Discriminant Analysis)
 #defining the group of interest
 Group = X1
-mean(xxca) #use non-centered data
-table(Temp) #okay if groups are not equal
-res = lda( x=data.frame(ilr(xxca)), grouping=Group )
+mean(Spooky_acomp) #use non-centered data, because you dont care for normality here
+table(Group) #okay if groups are not equal
+res = lda( x=data.frame(ilr(Spooky_acomp)), grouping=Group )
 res
 
 #backtransforming from ilr coordinates to our data scales
-ilrInv(res$means, orig=xxca)
+ilrInv(res$means, orig=Spooky_acomp)
 
 # Variance? Maybe?
-V = ilrBase(xxca) 
-rownames(V)= colnames(xxca)
+V = ilrBase(Spooky_acomp) 
+rownames(V)= colnames(Spooky_acomp)
 t(ilr2clr(t(res$scaling), V=V)) #not 100% sure what this is showing me, but it is showing me something
 
 #Showing the original groups and their alignment across the LDAs
