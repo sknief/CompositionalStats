@@ -89,6 +89,10 @@ xxca
 
 ### EXAMINING THE DATA AND TESTING FOR NORMALITY #####
 
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Traces of all MO2 data")
+text(5, 7, "Trial 6.6- Lemon balm")
+
 plot(xxca)
 plot(clr(xxca))
 plot(ilr(xxca))
