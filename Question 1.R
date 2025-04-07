@@ -1,6 +1,6 @@
 ###############################################
-## Clean, Basic, Compositional Analysis Code ##
-## SMSK 2025                                 ##
+# More Testing of Compositional Analysis Code #
+# SMSK 2025                                   #
 ###############################################
 
 #### First: Packages and Prereqs
@@ -22,8 +22,8 @@ library(dplyr)
 #All variables, output and models start with the term "Spooky" - you need to ctrl + f and replace this term with a keyword relevant to your current research question
 
 #Let's save both of these pieces of information
-researchQuestion <- "Enter Research Q" #keep brief
-keyword <- "Spooky" #Spooky by default
+researchQuestion <- "impact of DAY and VAX on COMP, by TEMP" #keep brief
+keyword <- "DAY" #Spooky by default
 
 
 #we will use the keyword in the export pdf titles as well
@@ -58,57 +58,136 @@ text(x=.5, y=.7, researchQuestion)
 
 #### Step Two: Data Import
 #$ [Insert Data Here]
-DATA <- as.dataframe(yourdatahere)
+DATA <- as.data.frame(Bloodsmear_data_full)
 #$ [Optional: Data Cleaning]
+DATA$Timepoint <- replace(DATA$Timepoint, DATA$Timepoint == 17, 7) #okay that worked
+
+#Subsetting
+DATA$Timepoint <- as.factor(DATA$Timepoint)
+levels(DATA$Timepoint)
+
+
+#Splitting the datasets by timepoint
+Day2_Data = subset(DATA, DATA$Timepoint == 2)
+Day2_x100s = Day2_Data[c(1:6, 11:13)]
+Day2_x1000s = Day2_Data[1:10]
+
+Day7_Data = subset(DATA, DATA$Timepoint == 7)
+Day7_x100s = Day7_Data[c(1:6, 11:13)]
+Day7_x1000s = Day7_Data[1:10]
+
+Day14_Data = subset(DATA, DATA$Timepoint == 14)
+Day14_x100s = Day14_Data[c(1:6, 11:13)]
+Day14_x1000s = Day14_Data[1:10]
+
+Day21_Data = subset(DATA, DATA$Timepoint == 21)
+Day21_x100s = Day21_Data[c(1:6, 11:13)]
+Day21_x1000s = Day21_Data[1:10]
+
+#Then I need to split them further by temp..... wait. I should have split them by temp for the impacts of day, because day is still in the model....
+
+
+#So lets do the actual splitting I need for this research q: 
+#Splitting by temp
+DATA$TempTreat <- as.factor(DATA$TempTreat)
+levels(DATA$TempTreat)
+
+Cold_Data = subset(DATA, DATA$TempTreat == "Cold")
+Cold_x100s = Cold_Data[c(1:6, 11:13)]
+Cold_x1000s = Cold_Data[1:10]
+
+Fluc_Data = subset(DATA, DATA$TempTreat == "Fluc")
+Fluc_x100s = Fluc_Data[c(1:6, 11:13)]
+Fluc_x1000s = Fluc_Data[1:10]
+
+Opt_Data = subset(DATA, DATA$TempTreat == "Opt")
+Opt_x100s = Opt_Data[c(1:6, 11:13)]
+Opt_x1000s = Opt_Data[1:10]
+
 
 # make a composition
-Spooky_acomp = acomp(DATA, c('Y1', 'Y2', 'Y3'))
-Spooky_acomp
+Cold_x100s_acomp = acomp(Cold_x100s[7:9])
+Cold_x100s_acomp
+Cold_x1000s_acomp = acomp(Cold_x1000s[7:10])
+Cold_x1000s_acomp
 
-#explore the composition
+Fluc_x100s_acomp = acomp(Fluc_x100s[7:9])
+Fluc_x100s_acomp
+Fluc_x1000s_acomp = acomp(Fluc_x1000s[7:10])
+Fluc_x1000s_acomp
 
-#PDF export code
-plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
-text(5, 8, "Graphical Exploration of Composition")
-text(5, 7, keyword)
+Opt_x100s_acomp = acomp(Opt_x100s[7:9])
+Opt_x100s_acomp
+Opt_x1000s_acomp = acomp(Opt_x1000s[7:10])
+Opt_x1000s_acomp
 
-plot(Spooky_acomp)
-title("Untransformed Composition",outer=TRUE,line=-1)
-plot(clr(Spooky_acomp)) #clr transformation (central log)
-title("CLR-transformed Composition",outer=TRUE,line=-1)
-plot(ilr(Spooky_acomp)) #ilr transformation (isometric log) (check)
-title("ILR-transformed Composition",outer=TRUE,line=-1)
+#okay, a billion datasets and compositions made...
+#My research question is: Are the compositions different to each other by day (i.e. did the general compositions change? seperated by treatment, is Day 21 Vax different to Day 14 vax) AND are the vax and non-vax groups different to EACH OTHER within each day (ie day 21 is T vs C different)
+
+#This means i need to run the same analysis a bunch of times, or I could try to loop it 
 
 
+#alternatively, turn sections into functions
+comp_explore <- function(acomp_object, identifier) {
+  comp_Ident <- paste0(identifier, "_comp_explore_graphs_") #this is to identify the output from your         specific run or hypothesis
+  pdf(file = paste(comp_Ident, ".pdf", sep = "_"))
+  #actual plot code
+  plot(acomp_object)
+  title("Untransformed Composition",outer=TRUE,line=-1)
+  plot(clr(acomp_object)) #clr transformation (central log)
+  title("CLR-transformed Composition",outer=TRUE,line=-1)
+  plot(ilr(acomp_object)) #ilr transformation (isometric log) (check)
+  title("ILR-transformed Composition",outer=TRUE,line=-1)
+  dev.off()
+  print("Graphs Made!")
+}
+
+#this all works
+comp_explore(Cold_x100s_acomp, "Cold_x100s")
+comp_explore(Cold_x1000s_acomp, "Cold_x1000s")
+
+#cleaning function, double arrow heads apparently move assignments to global env and not local function one
+comp_clean <- function(acomp_object, identifier){
+  BDL_MNAR_REPLACE <<- 0.001 #assign a value to replace BDL and MNARs
+  acomp_object_replaced <<- zeroreplace(acomp_object, BDL_MNAR_REPLACE) #replace zeros
+  acomp_object_replaced[is.na(acomp_object_replaced)] <<- BDL_MNAR_REPLACE #replace NAs
+  
+  original_name <<- deparse1(substitute(acomp_object)) # get the original variable name
+  new_name <<- paste0(original_name, "_cleaned")
+  assign(new_name, acomp_object_replaced, envir = .GlobalEnv) # assign the cleaned object to a new variable name
+
+  clean_Ident <- paste0(identifier, "_cleaned_comp_explore_graphs_") 
+  pdf(file = paste(clean_Ident, ".pdf", sep = "_"))
+  #PDF code
+  plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+  text(5, 8, "Composition after treating missing values")
+  text(5, 7, identifier)
+  
+  plot(acomp_object_replaced)
+  title("Untransformed Cleaned Composition",outer=TRUE,line=-1)
+  plot(clr(acomp_object_replaced)) #clr transformation (central log)
+  title("CLR-transformed Cleaned Composition",outer=TRUE,line=-1)
+  plot(ilr(acomp_object_replaced)) #ilr transformation (isometric log) (check)
+  title("ILR-transformed Cleaned Composition",outer=TRUE,line=-1)
+  
+  dev.off()
+  print("Graphs Made!")
+}
+
+comp_clean(Cold_x1000s_acomp, "Cold_x1000s")
+missingSummary(Cold_x1000s_acomp_cleaned)
+Cold_x1000s_acomp
+
+
+ #table of missing values
 #### Step Three: Checking for and dealing with missing values
 # notice: you need to work with an acomp object for the following code
-missingSummary(Spooky_acomp) #table of missing values
-# we will use the imputation method of the book in order to deal with missing values, which is to replace them with the smallest non-zero value in the composition (NOT OG DATASET) 
-BDL_MNAR_REPLACE <- 0.001 #assign a value to replace BDL and MNARs
-Spooky_acomp <- zeroreplace(Spooky_acomp, BDL_MNAR_REPLACE) #replace zeros
-missingSummary(Spooky_acomp) #check for missing values again
-Spooky_acomp[is.na(Spooky_acomp)] <- BDL_MNAR_REPLACE #replace NAs
-missingSummary(Spooky_acomp) # final check
-
-#explore the composition again
-#PDF code
-plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
-text(5, 8, "Composition after treating missing values")
-text(5, 7, keyword)
-
-
-plot(Spooky_acomp)
-title("Untransformed Composition",outer=TRUE,line=-1)
-plot(clr(Spooky_acomp)) #clr transformation (central log)
-title("CLR-transformed Composition",outer=TRUE,line=-1)
-plot(ilr(Spooky_acomp)) #ilr transformation (isometric log) (check)
-title("ILR-transformed Composition",outer=TRUE,line=-1)
 
 
 ### Step Five: Testing for normality + other assumptions (DATA diagnostics)
 # First, testing for normality (normal distribution)
-mvnorm.etest(ilr(Spooky_acomp)) #complete multivariate test
-acompNormalGOF.test(Spooky_acomp, R = 311) #alternative multivariate test, works on non-transformed data
+#mvnorm.etest(ilr(Cold_x1000s_acomp_cleaned)) #complete multivariate test
+acompNormalGOF.test(Cold_x1000s_acomp_cleaned, R = 116) #alternative multivariate test, works on non-transformed data
 
 #exploring through graphs
 #debug code if the ablines are weird
@@ -123,45 +202,58 @@ panel.qq <- function(x, y, ...) {
 }
 
 #QQplots
-pairs(Spooky_acomp, lower.panel = panel.qq) #use acomp object for these
+pairs(Cold_x1000s_acomp_cleaned, lower.panel = panel.qq) #use acomp object for these
 
 
 #Alternative tests to check if a count comp distribution fits better 
-Spooky_ccomp <- ccomp(DATA, c('Y1', 'Y2', 'Y3'))
-Spooky_ccomp
+Spooky_ccomp <- ccomp(Cold_x1000s[7:10])
 Spooky_ccomp #explore the composition
 
 #Alternative ccomp distributions: multinomial and multi-poisson
-ccompMultinomialGOF.test(Spooky_ccomp, R = 310) #not multinomially distributed, no use in using ccomp
+ccompMultinomialGOF.test(Spooky_ccomp, R = 116) #not multinomially distributed, no use in using ccomp
 ccompPoissonGOF.test(Spooky_ccomp) # not a multi-Poission distribution
 
-#If composition failed normality test, we can try to transform or center
-#centering the (acomp)
-mean(Spooky_acomp)
-Spooky_centered_acomp <- Spooky_acomp - mean(Spooky_acomp) #centering by subtracting the mean
-mean(Spooky_centered_acomp) #check if the centered mean is the neutral element
+comp_center <- function(acomp_object, identifier) {
+  
+  acomp_object_centered <- acomp_object - mean(acomp_object) #centering by subtracting the mean
+  print(c("Centered mean is ", mean(acomp_object_centered))) #check if the centered mean is the neutral element
+  
+  original_name <<- deparse1(substitute(acomp_object)) # get the original variable name
+  new_name <<- paste0(original_name, "_centered")
+  assign(new_name, acomp_object_centered, envir = .GlobalEnv) # assign the cleaned object to a new variable name
+  
+  #PDF export code for this section: 
+  center_Ident <- paste0(identifier, "_centered_comp_explore_graphs_") 
+  pdf(file = paste(center_Ident, ".pdf", sep = "_"))
+  plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+  text(5, 8, "Centering the Data (Normality Fix)")
+  text(5, 7, identifier)
+  
+  plot(acomp_object)
+  title("Current Aitch. Composition",outer=TRUE,line=-1)
+  pairs(acomp_object, lower.panel = panel.qq) #QQplots and histos
+  title("Current Aitch. Composition",outer=TRUE,line=-1)
+  plot(acomp_object_centered)
+  title("Centered Aitch. Composition",outer=TRUE,line=-1)
+  pairs(acomp_object_centered, lower.panel = panel.qq)
+  title("Centered Aitch. Composition",outer=TRUE,line=-1)
+  
+  dev.off()
+  
+}
 
-#examining centered data
-plot(Spooky_centered_acomp)
-pairs(Spooky_centered_acomp, lower.panel = panel.qq)
-mvnorm.etest(Spooky_centered_acomp, R = 310) #complete multivariate test, 
+comp_clean(Fluc_x1000s_acomp, "Fluc_x1000s")
+comp_center(Fluc_x1000s_acomp_cleaned_centered, "Fluc_x1000s")
+
+
+mvnorm.etest(Fluc_x1000s_acomp_cleaned_centered, R = 103)
+mvnorm.etest(Fluc_x1000s_acomp_cleaned, R = 103) #this is the multivariate test for normality
+
+#complete multivariate test, 
 #according to the book, scaling is often used to compare subcompositions, but centering is used when date is often squashed into one corner of the simplex, which is what we had 
 
-#PDF export code for this section: 
-plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
-text(5, 8, "Testing for normality and other assumptions")
-text(5, 7, keyword)
 
-pairs(Spooky_acomp, lower.panel = panel.qq) #QQplots and histos
-title("Current Aitch. Composition",outer=TRUE,line=-1)
-Spooky_ccomp 
-title("Count Composition (ccomp)",outer=TRUE,line=-1)
-plot(Spooky_centered_acomp)
-title("Centered Aitch. Composition",outer=TRUE,line=-1)
-pairs(Spooky_centered_acomp, lower.panel = panel.qq)
-title("Centered Aitch. Composition",outer=TRUE,line=-1)
-
-#### Step Six: Descriptive Statistics
+#### Step Six: Descriptive Statistics (dont really need these tbh? chuck in at the end?)
 #variance
 mvar(Spooky_centered_acomp)
 
@@ -177,7 +269,7 @@ summary(Spooky_centered_acomp)
 #PDF export code 
 plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
 text(5, 8, "Descriptive Stats")
-text(5, 7, keyword)
+text(5, 7, Keyword)
 
 #boxplot of pairwise ration
 boxplot(Spooky_centered_acomp)
@@ -186,6 +278,11 @@ title("Boxplot of pairwise ration",outer=TRUE,line=-1)
 #plotting ternary diagrans with the margin call
 plot(Spooky_acomp, margin = "rcomp") #(CHECK) that these need to be non-centered
 title("Boxplot of pairwise ration",outer=TRUE,line=-1)
+
+
+
+
+
 
 
 #### Step Seven: Univariate Approaches (Treating the composition as one singular Y variable)
@@ -207,7 +304,7 @@ levels(X3)
 
 plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
 text(5, 8, "Univariate Approaches")
-text(5, 7, keyword)
+text(5, 7, Keyword)
 
 #plotting the composition and color-coding/shape-coding by the factors
 opar = par(xpd=NA,no.readonly=TRUE)
@@ -291,6 +388,8 @@ anova(multiModel)
 ## Checking the assumptions of the model (MODEL Diagnostics)
 #This should occur before the model is run, and i'll move the code later when I review it again
 #normally distributed residuals
+
+
 Resid = ilrInv(resid(fullModel),orig=Y)
 plot(Resid, cex=0.5)
 title("Ternary Diagrams of Residuals",outer=TRUE,line=-1)
@@ -320,7 +419,7 @@ par(opar)
 #PDF code
 plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
 text(5, 8, "Multivariate Approaches (PCA and LDA)")
-text(5, 7, keyword)
+text(5, 7, Keyword)
 
 ##PCA:
 Spooky_PCA <- princomp(Spooky_centered_acomp) #This function returns a princomp object, containing the full result of a PCA on the covariance matrix of the clr-transformed datase, and requires an acomp object

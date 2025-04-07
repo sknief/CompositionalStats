@@ -58,8 +58,8 @@ text(x=.5, y=.7, researchQuestion)
 
 #### Step Two: Data Import
 #$ [Insert Data Here]
-DATA <- subset(BD1000s, BD1000s$Timepoint==21)
-DATA <- as.data.frame(DATA[,c('RBC', 'Granu', 'Lymph', 'Mono')])
+DATA_SUB <- subset(BD1000s, BD1000s$Timepoint==21)
+DATA <- as.data.frame(DATA_SUB[,c('RBC', 'Granu', 'Lymph', 'Mono')])
 
 #$ [Optional: Data Cleaning]
 
@@ -72,7 +72,7 @@ D21_acomp
 #PDF export code
 plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
 text(5, 8, "Graphical Exploration of Composition")
-text(5, 7, Keyword)
+text(5, 7, keyword)
 
 plot(D21_acomp)
 title("Untransformed Composition",outer=TRUE,line=-1)
@@ -96,7 +96,7 @@ missingSummary(D21_acomp) # final check
 #PDF code
 plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
 text(5, 8, "Composition after treating missing values")
-text(5, 7, Keyword)
+text(5, 7, keyword)
 
 
 plot(D21_acomp)
@@ -178,7 +178,7 @@ summary(D21_centered_acomp)
 #PDF export code 
 plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
 text(5, 8, "Descriptive Stats")
-text(5, 7, Keyword)
+text(5, 7, keyword)
 
 #boxplot of pairwise ration
 boxplot(D21_centered_acomp)
@@ -192,9 +192,9 @@ title("Boxplot of pairwise ration (not centered)",outer=TRUE,line=-1)
 #### Step Seven: Univariate Approaches (Treating the composition as one singular Y variable)
 #Defining the independent and dependant variables
 Y = D21_centered_acomp #centered and cleaned composition from above
-X1 = DATA$TempTreat
-X2 = DATA$Timepoint
-X3 = DATA$Treatment
+X1 = DATA_SUB$TempTreat
+X2 = DATA_SUB$Timepoint
+X3 = DATA_SUB$Treatment
 
 #convert these to factors (and check their orders) if needed
 X1 <- as.factor(X1)
@@ -208,7 +208,7 @@ levels(X3)
 
 plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
 text(5, 8, "Univariate Approaches")
-text(5, 7, Keyword)
+text(5, 7, keyword)
 
 #plotting the composition and color-coding/shape-coding by the factors
 opar = par(xpd=NA,no.readonly=TRUE)
@@ -313,7 +313,8 @@ par(opar)
 #color-coordinate the above diagram by group
 opar <- par(oma=c(0,0,2,0),mar=c(4,4,1,0))
 pairwisePlot(clr(Pred),clr(Resid),col=as.numeric(X1))
-legend(locator(1),levels(X1),col=as.numeric(1:3),pch=1,xpd=NA) #starts a click to place mechanism for the legend
+legend(locator(1),levels(X1),col=as.numeric(1:3),pch=1,xpd=NA) #starts a click to place mechanism for the legend, might cause issues during the pdf export
+#legend(x=0.75,y=0.65,levels(X1),col=as.numeric(1:3),pch=1,xpd=NA) #PDF export legend
 par(opar)
 
 #### Step Eight: Multivariate Approaches (treating the composition as a collection of multiple Ys)
@@ -321,7 +322,7 @@ par(opar)
 #PDF code
 plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
 text(5, 8, "Multivariate Approaches (PCA and LDA)")
-text(5, 7, Keyword)
+text(5, 7, keyword)
 
 ##PCA:
 D21_PCA <- princomp(D21_centered_acomp) #This function returns a princomp object, containing the full result of a PCA on the covariance matrix of the clr-transformed datase, and requires an acomp object

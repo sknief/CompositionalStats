@@ -99,11 +99,14 @@ plot(ilr(xxca))
 mvnorm.etest(xxca, R = 310) #complete multivariate test, still not normal (test should be acomp and not transformed)
 qqnorm(xxca[, 'Granu'])
 
+#debug code
+dev.off()
+
 #better panel making code from stackoverflow
 panel.qq <- function(x, y, ...) {
-  usr <- par("usr"); on.exit(par(usr))
+  usr <- par("usr"); on.exit(par(usr=usr))
   par(usr = c(0, 1, 0, 1), new = TRUE)
-  qqplot(x, y, xlab = deparse(substitute(x)), ylab = deparse(substitute(y)))
+  qqplot(x, y, xlab = deparse1(substitute(x)), ylab = deparse1(substitute(y)))
   abline(c(0,1), ...)
 }
 
