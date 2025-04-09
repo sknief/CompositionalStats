@@ -1,5 +1,5 @@
 ###############################################
-# Day by Temp (Q1) Analysis Code             ##
+# Temp by Day (Q2) Analysis Code             ##
 ## SMSK 2025                                 ##
 ###############################################
 
@@ -283,91 +283,94 @@ levels(DATA$Timepoint)
 DATA$TempTreat <- as.factor(DATA$TempTreat)
 levels(DATA$TempTreat)
 
-Cold_Data = subset(DATA, DATA$TempTreat == "Cold")
-Cold_x100s = Cold_Data[c(1:6, 11:13)]
-Cold_x1000s = Cold_Data[1:10]
+Day2_Data = subset(DATA, DATA$Timepoint == "2")
+Day2_x100s = Day2_Data[c(1:6, 11:13)]
+Day2_x1000s = Day2_Data[1:10]
 
-Fluc_Data = subset(DATA, DATA$TempTreat == "Fluc")
-Fluc_x100s = Fluc_Data[c(1:6, 11:13)]
-Fluc_x1000s = Fluc_Data[1:10]
+Day7_Data = subset(DATA, DATA$Timepoint == "7")
+Day7_x100s = Day7_Data[c(1:6, 11:13)]
+Day7_x1000s = Day7_Data[1:10]
 
-Opt_Data = subset(DATA, DATA$TempTreat == "Opt")
-Opt_x100s = Opt_Data[c(1:6, 11:13)]
-Opt_x1000s = Opt_Data[1:10]
+Day14_Data = subset(DATA, DATA$Timepoint == "14")
+Day14_x100s = Day14_Data[c(1:6, 11:13)]
+Day14_x1000s = Day14_Data[1:10]
+
+Day21_Data = subset(DATA, DATA$Timepoint == "21")
+Day21_x100s = Day21_Data[c(1:6, 11:13)]
+Day21_x1000s = Day21_Data[1:10]
+
 
 
 # make a composition
-Cold_x100s_acomp = acomp(Cold_x100s[7:9])
-Cold_x100s_acomp
-Cold_x1000s_acomp = acomp(Cold_x1000s[7:10])
-Cold_x1000s_acomp
+Day2_x100s_acomp = acomp(Day2_x100s[7:9])
+Day2_x100s_acomp
+Day2_x1000s_acomp = acomp(Day2_x1000s[7:10])
+Day2_x1000s_acomp
 
-Fluc_x100s_acomp = acomp(Fluc_x100s[7:9])
-Fluc_x100s_acomp
-Fluc_x1000s_acomp = acomp(Fluc_x1000s[7:10])
-Fluc_x1000s_acomp
+Day7_x100s_acomp = acomp(Day7_x100s[7:9])
+Day7_x100s_acomp
+Day7_x1000s_acomp = acomp(Day7_x1000s[7:10])
+Day7_x1000s_acomp
 
-Opt_x100s_acomp = acomp(Opt_x100s[7:9])
-Opt_x100s_acomp
-Opt_x1000s_acomp = acomp(Opt_x1000s[7:10])
-Opt_x1000s_acomp
+Day14_x100s_acomp = acomp(Day14_x100s[7:9])
+Day14_x100s_acomp
+Day14_x1000s_acomp = acomp(Day14_x1000s[7:10])
+Day14_x1000s_acomp
+
+Day21_x100s_acomp = acomp(Day21_x100s[7:9])
+Day21_x100s_acomp
+Day21_x1000s_acomp = acomp(Day21_x1000s[7:10])
+Day21_x1000s_acomp
+
 
 
 #### Then, use the custom functions to explore, clean and center your comps #####
 
 #x100s Explore
-comp_explore(Cold_x100s_acomp, "Cold_x100s")
-comp_explore(Fluc_x100s_acomp, "Fluc_x100s")
-comp_explore(Opt_x100s_acomp, "Opt_x100s")
+comp_explore(Day2_x100s_acomp, "Day2_x100s")
+comp_explore(Day7_x100s_acomp, "Day7_x100s")
+comp_explore(Day14_x100s_acomp, "Day14_x100s")
+comp_explore(Day21_x100s_acomp, "Day21_x100s")
 
 #x1000s Explore
-comp_explore(Cold_x1000s_acomp, "Cold_x1000s")
-comp_explore(Fluc_x1000s_acomp, "Fluc_x1000s")
-comp_explore(Opt_x1000s_acomp, "Opt_x1000s")
+comp_explore(Day2_x1000s_acomp, "Day2_x1000s")
+comp_explore(Day7_x1000s_acomp, "Day7_x1000s")
+comp_explore(Day14_x1000s_acomp, "Day14_x1000s")
+comp_explore(Day21_x1000s_acomp, "Day21_x1000s")
 
 
-#x100s Clean
-comp_clean(Cold_x100s_acomp, "Cold_x100s")
-comp_clean(Fluc_x100s_acomp, "Fluc_x100s")
-comp_clean(Opt_x100s_acomp, "Opt_x100s")
+#x100s clean
+comp_clean(Day2_x100s_acomp, "Day2_x100s")
+comp_clean(Day7_x100s_acomp, "Day7_x100s")
+comp_clean(Day14_x100s_acomp, "Day14_x100s")
+comp_clean(Day21_x100s_acomp, "Day21_x100s")
 
 #x1000s clean
-comp_clean(Cold_x1000s_acomp, "Cold_x1000s")
-comp_clean(Fluc_x1000s_acomp, "Fluc_x1000s")
-comp_clean(Opt_x1000s_acomp, "Opt_x1000s")
+comp_clean(Day2_x1000s_acomp, "Day2_x1000s")
+comp_clean(Day7_x1000s_acomp, "Day7_x1000s")
+comp_clean(Day14_x1000s_acomp, "Day14_x1000s")
+comp_clean(Day21_x1000s_acomp, "Day21_x1000s")
 
 
 #x100s Center
-comp_center(Cold_x100s_acomp_cleaned, "Cold_x100s")
-comp_center(Fluc_x100s_acomp_cleaned, "Fluc_x100s")
-comp_center(Opt_x100s_acomp_cleaned, "Opt_x100s")
+comp_center(Day2_x100s_acomp_cleaned, "Day2_x100s")
+comp_center(Day7_x100s_acomp_cleaned, "Day7_x100s")
+comp_center(Day14_x100s_acomp_cleaned, "Day14_x100s")
+comp_center(Day21_x100s_acomp_cleaned, "Day21_x100s")
 
-#x1000s clean
-comp_center(Cold_x1000s_acomp_cleaned, "Cold_x1000s")
-comp_center(Fluc_x1000s_acomp_cleaned, "Fluc_x1000s")
-comp_center(Opt_x1000s_acomp_cleaned, "Opt_x1000s")
-
-#### Test for normality (look at graph output from comp_center as well) ####
-
-#x100s
-acompNormalGOF.test(Cold_x100s_acomp_cleaned_centered, R = 116) #sig, not normal
-acompNormalGOF.test(Fluc_x100s_acomp_cleaned_centered, R = 103) #sig, not normal
-acompNormalGOF.test(Opt_x100s_acomp_cleaned_centered, R = 92) #sig, not normal
+#x1000s center
+comp_center(Day2_x1000s_acomp_cleaned, "Day2_x1000s")
+comp_center(Day7_x1000s_acomp_cleaned, "Day7_x1000s")
+comp_center(Day14_x1000s_acomp_cleaned, "Day14_x1000s")
+comp_center(Day21_x1000s_acomp_cleaned, "Day21_x1000s")
 
 
-#x1000s
-acompNormalGOF.test(Cold_x1000s_acomp_cleaned_centered, R = 116) #sig, not normal
-acompNormalGOF.test(Fluc_x1000s_acomp_cleaned_centered, R = 103) #sig, not normal
-acompNormalGOF.test(Opt_x1000s_acomp_cleaned_centered, R = 92) #sig, not normal
-
-#........ I'll just ignore those tests for now
-
-#   MODEL 1: Cold x100s #########################################
+#   MODEL 1: Day 2 x100s #########################################
 ##### Univariate Stats 101: Model Set-Up + Visualisation ###########
 #Defining the independent and dependant variables
-Y = Cold_x100s_acomp_cleaned_centered #centered and cleaned composition from above
-X1 = Cold_x100s$Timepoint
-X2 = Cold_x100s$Treatment #no need for temp-treat, as it is subsetted
+Y = Day2_x100s_acomp_cleaned_centered #centered and cleaned composition from above
+X1 = Day2_x100s$TempTreat
+X2 = Day2_x100s$Treatment #no need for temp-treat, as it is subsetted
 
 #convert these to factors (and check their orders) if needed
 X1 <- as.factor(X1)
@@ -388,72 +391,59 @@ text(5, 7, keyword)
 #plotting the composition and color-coding/shape-coding by the factors
 opar = par(xpd=NA,no.readonly=TRUE)
 plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
-                             "#629cc4",
-                             "#f4777f",
-                             "#93003a")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+                            "green",
+                            "#f4777f")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
 legend(x=0.85,y=0.65,abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
 legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
-                                                                       "#629cc4",
-                                                                       "#f4777f",
-                                                                       "#93003a"),yjust=0) #legend for X1
-title("Cold Treatment (x100s)",outer=TRUE,line=-1)
+                                                                       "green",
+                                                                       "#f4777f"),yjust=0) #legend for X1
+title("Day 2 (x100s)",outer=TRUE,line=-1)
 #its an interesting graph, but subsetting it by day within cold might look more interesting...
 
- ------------
+------------
+  
+##### SUBSETTING BY DAY GRAPH SIDETRACK (TO BE REVISED)########
 
-##### SUBSETTING BY DAY GRAPH SIDETRACK ##########
+#Cold: 
+Cold_Y = Y[X1 == "Cold"] #copilot suggestion (thank u)
+Cold_X1 = X1[X1 == "Cold"]
+Cold_X2 = X2[X1 == "Cold"]
 
-#Day 2: 
-Day2_Y = Y[X1 == "2"] #copilot suggestion (thank u)
-Day2_X1 = X1[X1 == "2"]
-Day2_X2 = X2[X1 == "2"]
+#Fluc: 
+Fluc_Y = Y[X1 == "Fluc"] 
+Fluc_X1 = X1[X1 == "Fluc"]
+Fluc_X2 = X2[X1 == "Fluc"]
 
-#Day 7: 
-Day7_Y = Y[X1 == "7"] 
-Day7_X1 = X1[X1 == "7"]
-Day7_X2 = X2[X1 == "7"]
+#Opt: 
+Opt_Y = Y[X1 == "Opt"] 
+Opt_X1 = X1[X1 == "Opt"]
+Opt_X2 = X2[X1 == "Opt"]
 
-#Day 14: 
-Day14_Y = Y[X1 == "14"] 
-Day14_X1 = X1[X1 == "14"]
-Day14_X2 = X2[X1 == "14"]
-
-#Day 21
-Day21_Y = Y[X1 == "21"] 
-Day21_X1 = X1[X1 == "21"]
-Day21_X2 = X2[X1 == "21"]
-
-#panel the graph view to show me four graphs at a time
+#panel the graph view to show me three graphs at a time
 par(mfrow=c(2,2))
 
 #plot no. 1
-plot(Day2_Y, pch=c(1,3)[Day2_X2], col = c("blue", "red")[Day2_X2])
+plot(Cold_Y, pch=c(1,3)[Cold_X2], col = c("blue", "red")[Cold_X2])
 #plot no. 2
-plot(Day7_Y, pch=c(1,3)[Day7_X2], col = c("blue", "red")[Day7_X2])
+plot(Fluc_Y, pch=c(1,3)[Fluc_X2], col = c("blue", "red")[Fluc_X2])
 #plot no. 3
-plot(Day14_Y, pch=c(1,3)[Day14_X2], col = c("blue", "red")[Day14_X2])
-#plot no. 4
-plot(Day21_Y, pch=c(1,3)[Day21_X2], col = c("blue", "red")[Day21_X2])
+plot(Opt_Y, pch=c(1,3)[Opt_X2], col = c("blue", "red")[Opt_X2])
 #Extras
 legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
-text(locator(1), "Day 2", col = "black")
-text(locator(1), "Day 7", col = "black")
-text(locator(1), "Day 14", col = "black")
-text(locator(1), "Day 21", col = "black")
-text(locator(1), "Change in BC composition over time (Cold Temp, x100s)")
+text(locator(1), "Cold", col = "black")
+text(locator(1), "Fluc", col = "black")
+text(locator(1), "Opt", col = "black")
+text(locator(1), "Change in BC composition across temperatures (Day 2, x100s)")
 
 
-boxplot(Y,X3,notch=TRUE) #boxplot of the data
-title("Composition against ...",outer=TRUE,line=-1)
 
 
- --------
-##### Univariate Stats 102: Model Making + ANOVAs #####
+  ##### Univariate Stats 102: Model Making + ANOVAs #####
 #e.g:
 #setting the contrasts
 contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
 
-fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = day * treatment
+fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = temp * treatment
 coef(fullModel) #parameters
 anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
@@ -470,13 +460,414 @@ vcov(model) #variance-covariance matrix
 barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
 
 
-## PLOTTING the models
-#with one of the following
-#Looking at the model visually
-comp_ANOVA_plots_4(fullModel, Y, X1, "fullModel") #for 2 levels, for example
-comp_ANOVA_plots_2(fullModel, Y, X2, "fullModel") #for 2 levels, for example
-# A variable may be removed from the model if the confidence ellipse around its parameter always contains the barycenter of the composition.
-#gonna have to update this code cause I am getting six ellipses
+
+##### Univariate Stats 103: Model Diagnostics #####
+#another round of plots
+comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, for example
+
+
+
+#   MODEL 2: Day 7 x100s #########################################
+##### Univariate Stats 101: Model Set-Up + Visualisation ###########
+#Defining the independent and dependant variables
+Y = Day7_x100s_acomp_cleaned_centered #centered and cleaned composition from above
+X1 = Day7_x100s$TempTreat
+X2 = Day7_x100s$Treatment #no need for temp-treat, as it is subsetted
+
+#convert these to factors (and check their orders) if needed
+X1 <- as.factor(X1)
+X2 <- as.factor(X2)
+
+#checking the levels orders
+levels(X1)
+levels(X2) 
+
+dev.off()
+
+#Visual exploration of day
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Univariate Approaches")
+text(5, 7, keyword)
+
+#reset the graph view
+par(mfrow=c(1,1))
+
+
+#plotting the composition and color-coding/shape-coding by the factors
+opar = par(xpd=NA,no.readonly=TRUE)
+plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
+                            "green",
+                            "#f4777f")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+legend(x=0.85,y=0.65,abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
+legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
+                                                                       "green",
+                                                                       "#f4777f"),yjust=0) #legend for X1
+title("Day 7 (x100s)",outer=TRUE,line=-1)
+#its an interesting graph, but subsetting it by day within cold might look more interesting...
+
+------------
+  
+  ##### SUBSETTING BY DAY GRAPH SIDETRACK (TO BE REVISED)########
+
+#Cold: 
+Cold_Y = Y[X1 == "Cold"] #copilot suggestion (thank u)
+Cold_X1 = X1[X1 == "Cold"]
+Cold_X2 = X2[X1 == "Cold"]
+
+#Fluc: 
+Fluc_Y = Y[X1 == "Fluc"] 
+Fluc_X1 = X1[X1 == "Fluc"]
+Fluc_X2 = X2[X1 == "Fluc"]
+
+#Opt: 
+Opt_Y = Y[X1 == "Opt"] 
+Opt_X1 = X1[X1 == "Opt"]
+Opt_X2 = X2[X1 == "Opt"]
+
+#panel the graph view to show me three graphs at a time
+par(mfrow=c(2,2))
+
+#plot no. 1
+plot(Cold_Y, pch=c(1,3)[Cold_X2], col = c("blue", "red")[Cold_X2])
+#plot no. 2
+plot(Fluc_Y, pch=c(1,3)[Fluc_X2], col = c("blue", "red")[Fluc_X2])
+#plot no. 3
+plot(Opt_Y, pch=c(1,3)[Opt_X2], col = c("blue", "red")[Opt_X2])
+#Extras
+legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
+text(locator(1), "Cold", col = "black")
+text(locator(1), "Fluc", col = "black")
+text(locator(1), "Opt", col = "black")
+text(locator(1), "Change in BC composition across temperatures (Day 7, x100s)")
+
+par(mfrow=c(1,1)))
+  
+  ##### Univariate Stats 102: Model Making + ANOVAs #####
+#e.g:
+#setting the contrasts
+contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
+
+fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = temp * treatment
+coef(fullModel) #parameters
+anova(fullModel) #Type 1 anova
+Anova(fullModel) #Type 2 anova
+#sig difference between days, not between treat and vax, no sign interaction
+
+##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
+(a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
+(b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
+#the above output shows the increase between levels of the treatment variable
+(mu = a + b) #mean
+(Sigma=ilrvar2clr(var(single_X_model))) #variance
+vcov(model) #variance-covariance matrix
+(coefs <- ilrInv(coef(fullModel),orig=Y)) #backtransforming the coefficients
+barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
+
+
+
+##### Univariate Stats 103: Model Diagnostics #####
+#another round of plots
+comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, for example
+
+
+
+#   MODEL 3: Day 14 x100s #########################################
+##### Univariate Stats 101: Model Set-Up + Visualisation ###########
+#Defining the independent and dependant variables
+Y = Day14_x100s_acomp_cleaned_centered #centered and cleaned composition from above
+X1 = Day14_x100s$TempTreat
+X2 = Day14_x100s$Treatment #no need for temp-treat, as it is subsetted
+
+#convert these to factors (and check their orders) if needed
+X1 <- as.factor(X1)
+X2 <- as.factor(X2)
+
+#checking the levels orders
+levels(X1)
+levels(X2) 
+
+dev.off()
+
+#Visual exploration of day
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Univariate Approaches")
+text(5, 7, keyword)
+
+
+#plotting the composition and color-coding/shape-coding by the factors
+opar = par(xpd=NA,no.readonly=TRUE)
+plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
+                            "green",
+                            "#f4777f")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+legend(x=0.85,y=0.65,abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
+legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
+                                                                       "green",
+                                                                       "#f4777f"),yjust=0) #legend for X1
+title("Day 14 (x100s)",outer=TRUE,line=-1)
+#its an interesting graph, but subsetting it by day within cold might look more interesting...
+
+
+
+  ##### SUBSETTING BY DAY GRAPH SIDETRACK (TO BE REVISED)########
+
+#Cold: 
+Cold_Y = Y[X1 == "Cold"] #copilot suggestion (thank u)
+Cold_X1 = X1[X1 == "Cold"]
+Cold_X2 = X2[X1 == "Cold"]
+
+#Fluc: 
+Fluc_Y = Y[X1 == "Fluc"] 
+Fluc_X1 = X1[X1 == "Fluc"]
+Fluc_X2 = X2[X1 == "Fluc"]
+
+#Opt: 
+Opt_Y = Y[X1 == "Opt"] 
+Opt_X1 = X1[X1 == "Opt"]
+Opt_X2 = X2[X1 == "Opt"]
+
+#panel the graph view to show me three graphs at a time
+par(mfrow=c(2,2))
+
+#plot no. 1
+plot(Cold_Y, pch=c(1,3)[Cold_X2], col = c("blue", "red")[Cold_X2])
+#plot no. 2
+plot(Fluc_Y, pch=c(1,3)[Fluc_X2], col = c("blue", "red")[Fluc_X2])
+#plot no. 3
+plot(Opt_Y, pch=c(1,3)[Opt_X2], col = c("blue", "red")[Opt_X2])
+#Extras
+legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
+text(locator(1), "Cold", col = "black")
+text(locator(1), "Fluc", col = "black")
+text(locator(1), "Opt", col = "black")
+text(locator(1), "Change in BC composition across temperatures (Day 14, x100s)")
+
+par(mfrow=c(1,1))
+  
+##### Univariate Stats 102: Model Making + ANOVAs #####
+#e.g:
+#setting the contrasts
+contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
+
+fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = temp * treatment
+coef(fullModel) #parameters
+anova(fullModel) #Type 1 anova
+Anova(fullModel) #Type 2 anova
+#sig difference between days, not between treat and vax, no sign interaction
+
+##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
+(a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
+(b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
+#the above output shows the increase between levels of the treatment variable
+(mu = a + b) #mean
+(Sigma=ilrvar2clr(var(single_X_model))) #variance
+vcov(model) #variance-covariance matrix
+(coefs <- ilrInv(coef(fullModel),orig=Y)) #backtransforming the coefficients
+barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
+
+
+
+##### Univariate Stats 103: Model Diagnostics #####
+#another round of plots
+comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, for example
+
+#the next suggestion is to test for model redundancy by making a bunch of differently ordered models and seeing if the last variable is still significant
+model1 = lm(ilr(Y) ~ X2 * X1)
+anova(model1)
+anova(fullModel, model1) #exactly the same
+
+
+#   MODEL 4: Day 21 x100s #########################################
+##### Univariate Stats 101: Model Set-Up + Visualisation ###########
+#Defining the independent and dependant variables
+Y = Day21_x100s_acomp_cleaned_centered #centered and cleaned composition from above
+X1 = Day21_x100s$TempTreat
+X2 = Day21_x100s$Treatment #no need for temp-treat, as it is subsetted
+
+#convert these to factors (and check their orders) if needed
+X1 <- as.factor(X1)
+X2 <- as.factor(X2)
+
+#checking the levels orders
+levels(X1)
+levels(X2) 
+
+dev.off()
+
+#Visual exploration of day
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Univariate Approaches")
+text(5, 7, keyword)
+
+
+#plotting the composition and color-coding/shape-coding by the factors
+opar = par(xpd=NA,no.readonly=TRUE)
+plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
+                            "green",
+                            "#f4777f")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+legend(x=0.85,y=0.65,abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
+legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
+                                                                       "green",
+                                                                       "#f4777f"),yjust=0) #legend for X1
+title("Day 21 (x100s)",outer=TRUE,line=-1)
+#its an interesting graph, but subsetting it by day within cold might look more interesting...
+
+------------
+  
+  ##### SUBSETTING BY DAY GRAPH SIDETRACK (TO BE REVISED)########
+
+#Cold: 
+Cold_Y = Y[X1 == "Cold"] #copilot suggestion (thank u)
+Cold_X1 = X1[X1 == "Cold"]
+Cold_X2 = X2[X1 == "Cold"]
+
+#Fluc: 
+Fluc_Y = Y[X1 == "Fluc"] 
+Fluc_X1 = X1[X1 == "Fluc"]
+Fluc_X2 = X2[X1 == "Fluc"]
+
+#Opt: 
+Opt_Y = Y[X1 == "Opt"] 
+Opt_X1 = X1[X1 == "Opt"]
+Opt_X2 = X2[X1 == "Opt"]
+
+#panel the graph view to show me three graphs at a time
+par(mfrow=c(2,2))
+
+#plot no. 1
+plot(Cold_Y, pch=c(1,3)[Cold_X2], col = c("blue", "red")[Cold_X2])
+#plot no. 2
+plot(Fluc_Y, pch=c(1,3)[Fluc_X2], col = c("blue", "red")[Fluc_X2])
+#plot no. 3
+plot(Opt_Y, pch=c(1,3)[Opt_X2], col = c("blue", "red")[Opt_X2])
+#Extras
+legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
+text(locator(1), "Cold", col = "black")
+text(locator(1), "Fluc", col = "black")
+text(locator(1), "Opt", col = "black")
+text(locator(1), "Change in BC composition across temperatures (Day 21, x100s)")
+
+par(mfrow=c(1,1))
+
+
+##### Univariate Stats 102: Model Making + ANOVAs #####
+#e.g:
+#setting the contrasts
+contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
+
+fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = temp * treatment
+coef(fullModel) #parameters
+anova(fullModel) #Type 1 anova
+Anova(fullModel) #Type 2 anova
+#sig difference between days, not between treat and vax, no sign interaction
+
+##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
+(a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
+(b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
+#the above output shows the increase between levels of the treatment variable
+(mu = a + b) #mean
+(Sigma=ilrvar2clr(var(single_X_model))) #variance
+vcov(model) #variance-covariance matrix
+(coefs <- ilrInv(coef(fullModel),orig=Y)) #backtransforming the coefficients
+barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
+
+
+
+##### Univariate Stats 103: Model Diagnostics #####
+#another round of plots
+comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, for example
+
+
+################# x10000s  #####################
+#   MODEL 1: Day 2 x1000s #########################################
+##### Univariate Stats 101: Model Set-Up + Visualisation ###########
+#Defining the independent and dependant variables
+Y = Day2_x1000s_acomp_cleaned_centered #centered and cleaned composition from above
+X1 = Day2_x1000s$TempTreat
+X2 = Day2_x1000s$Treatment #no need for temp-treat, as it is subsetted
+
+#convert these to factors (and check their orders) if needed
+X1 <- as.factor(X1)
+X2 <- as.factor(X2)
+
+#checking the levels orders
+levels(X1)
+levels(X2) 
+
+dev.off()
+
+#Visual exploration of day
+plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+text(5, 8, "Univariate Approaches")
+text(5, 7, keyword)
+
+
+#plotting the composition and color-coding/shape-coding by the factors
+opar = par(xpd=NA,no.readonly=TRUE)
+plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
+                            "green",
+                            "#f4777f")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+legend(x=0.85,y=0.65,abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
+legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
+                                                                       "green",
+                                                                       "#f4777f"),yjust=0) #legend for X1
+title("Day 2 (x1000s)",outer=TRUE,line=-1)
+#its an interesting graph, but subsetting it by day within cold might look more interesting...
+
+------------
+  
+  ##### SUBSETTING BY DAY GRAPH SIDETRACK (TO BE REVISED)########
+
+#Cold: 
+Cold_Y = Y[X1 == "Cold"] #copilot suggestion (thank u)
+Cold_X1 = X1[X1 == "Cold"]
+Cold_X2 = X2[X1 == "Cold"]
+
+#Fluc: 
+Fluc_Y = Y[X1 == "Fluc"] 
+Fluc_X1 = X1[X1 == "Fluc"]
+Fluc_X2 = X2[X1 == "Fluc"]
+
+#Opt: 
+Opt_Y = Y[X1 == "Opt"] 
+Opt_X1 = X1[X1 == "Opt"]
+Opt_X2 = X2[X1 == "Opt"]
+
+
+#plot no. 1
+plot(Cold_Y, pch=c(1,3)[Cold_X2], col = c("blue", "red")[Cold_X2])
+text(locator(1),"Day 2, Cold Temp (x1000s)")
+#plot no. 2
+plot(Fluc_Y, pch=c(1,3)[Fluc_X2], col = c("blue", "red")[Fluc_X2])
+text(locator(1),"Day 2, Fluc Temp (x1000s)")
+#plot no. 3
+plot(Opt_Y, pch=c(1,3)[Opt_X2], col = c("blue", "red")[Opt_X2])
+text(locator(1),"Day 2, Opt Temp (x1000s)")
+#Extras
+legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
+
+
+
+##### Univariate Stats 102: Model Making + ANOVAs #####
+#e.g:
+#setting the contrasts
+contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
+
+fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = temp * treatment
+coef(fullModel) #parameters
+anova(fullModel) #Type 1 anova
+Anova(fullModel) #Type 2 anova
+#sig difference between days, not between treat and vax, no sign interaction
+
+##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
+(a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
+(b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
+#the above output shows the increase between levels of the treatment variable
+(mu = a + b) #mean
+(Sigma=ilrvar2clr(var(single_X_model))) #variance
+vcov(model) #variance-covariance matrix
+(coefs <- ilrInv(coef(fullModel),orig=Y)) #backtransforming the coefficients
+barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
+
 
 
 ##### Univariate Stats 103: Model Diagnostics #####
@@ -490,13 +881,12 @@ anova(fullModel, model1) #exactly the same
 
 
 
-
-#   MODEL 2: Fluc x100s   ###############################################
+#   MODEL 2: Day 7 x1000s #########################################
 ##### Univariate Stats 101: Model Set-Up + Visualisation ###########
 #Defining the independent and dependant variables
-Y = Fluc_x100s_acomp_cleaned_centered #centered and cleaned composition from above
-X1 = Fluc_x100s$Timepoint
-X2 = Fluc_x100s$Treatment #no need for temp-treat, as it is subsetted
+Y = Day7_x1000s_acomp_cleaned_centered #centered and cleaned composition from above
+X1 = Day7_x1000s$TempTreat
+X2 = Day7_x1000s$Treatment #no need for temp-treat, as it is subsetted
 
 #convert these to factors (and check their orders) if needed
 X1 <- as.factor(X1)
@@ -517,69 +907,61 @@ text(5, 7, keyword)
 #plotting the composition and color-coding/shape-coding by the factors
 opar = par(xpd=NA,no.readonly=TRUE)
 plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
-                            "#629cc4",
-                            "#f4777f",
-                            "#93003a")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+                            "green",
+                            "#f4777f")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
 legend(x=0.85,y=0.65,abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
 legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
-                                                                       "#629cc4",
-                                                                       "#f4777f",
-                                                                       "#93003a"),yjust=0) #legend for X1
-title("Fluc Treatment (x100s)",outer=TRUE,line=-1)
+                                                                       "green",
+                                                                       "#f4777f"),yjust=0) #legend for X1
+title("Day 7 (x1000s)",outer=TRUE,line=-1)
+#its an interesting graph, but subsetting it by day within cold might look more interesting...
 
+------------
+  
+  ##### SUBSETTING BY DAY GRAPH SIDETRACK (TO BE REVISED)########
 
-##### SUBSETTING BY DAY GRAPH SIDETRACK ##########
+#Cold: 
+Cold_Y = Y[X1 == "Cold"] #copilot suggestion (thank u)
+Cold_X1 = X1[X1 == "Cold"]
+Cold_X2 = X2[X1 == "Cold"]
 
-#Day 2: 
-Day2_Y = Y[X1 == "2"] #copilot suggestion (thank u)
-Day2_X1 = X1[X1 == "2"]
-Day2_X2 = X2[X1 == "2"]
+#Fluc: 
+Fluc_Y = Y[X1 == "Fluc"] 
+Fluc_X1 = X1[X1 == "Fluc"]
+Fluc_X2 = X2[X1 == "Fluc"]
 
-#Day 7: 
-Day7_Y = Y[X1 == "7"] 
-Day7_X1 = X1[X1 == "7"]
-Day7_X2 = X2[X1 == "7"]
+#Opt: 
+Opt_Y = Y[X1 == "Opt"] 
+Opt_X1 = X1[X1 == "Opt"]
+Opt_X2 = X2[X1 == "Opt"]
 
-#Day 14: 
-Day14_Y = Y[X1 == "14"] 
-Day14_X1 = X1[X1 == "14"]
-Day14_X2 = X2[X1 == "14"]
-
-#Day 21
-Day21_Y = Y[X1 == "21"] 
-Day21_X1 = X1[X1 == "21"]
-Day21_X2 = X2[X1 == "21"]
-
-#panel the graph view to show me four graphs at a time
-par(mfrow=c(2,2))
-
-#plot no. 1
-plot(Day2_Y, pch=c(1,3)[Day2_X2], col = c("blue", "red")[Day2_X2])
-#plot no. 2
-plot(Day7_Y, pch=c(1,3)[Day7_X2], col = c("blue", "red")[Day7_X2])
-#plot no. 3
-plot(Day14_Y, pch=c(1,3)[Day14_X2], col = c("blue", "red")[Day14_X2])
-#plot no. 4
-plot(Day21_Y, pch=c(1,3)[Day21_X2], col = c("blue", "red")[Day21_X2])
-#Extras
-legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
-text(locator(1), "Day 2", col = "black")
-text(locator(1), "Day 7", col = "black")
-text(locator(1), "Day 14", col = "black")
-text(locator(1), "Day 21", col = "black")
-text(locator(1), "Change in BC composition over time (Fluc Temp, x100s)")
-
-#reset graph view
+#panel the graph view to show me three graphs at a time
 par(mfrow=c(1,1))
 
-#### Univariate Stats 102: Model Making + ANOVAs #####
+#plot no. 1
+plot(Cold_Y, pch=c(1,3)[Cold_X2], col = c("blue", "red")[Cold_X2])
+text(locator(1),"Day 7, Cold Temp (x1000s)")
+#plot no. 2
+plot(Fluc_Y, pch=c(1,3)[Fluc_X2], col = c("blue", "red")[Fluc_X2])
+text(locator(1),"Day 7, Fluc Temp (x1000s)")
+#plot no. 3
+plot(Opt_Y, pch=c(1,3)[Opt_X2], col = c("blue", "red")[Opt_X2])
+text(locator(1),"Day 7, Opt Temp (x1000s)")
+#Extras
+legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
+
+
+  
+  
+  
+##### Univariate Stats 102: Model Making + ANOVAs #####
 #e.g:
 #setting the contrasts
 contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
 
-fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = day * treatment
+fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = temp * treatment
 coef(fullModel) #parameters
-anova(fullModel)
+anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
 
@@ -594,14 +976,6 @@ vcov(model) #variance-covariance matrix
 barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
 
 
-## PLOTTING the models
-#with one of the following
-#Looking at the model visually
-comp_ANOVA_plots_4(fullModel, Y, X1, "fullModel") #for 2 levels, for example
-comp_ANOVA_plots_2(fullModel, Y, X2, "fullModel") #for 2 levels, for example
-# A variable may be removed from the model if the confidence ellipse around its parameter always contains the barycenter of the composition.
-#gonna have to update this code cause I am getting six ellipses
-
 
 ##### Univariate Stats 103: Model Diagnostics #####
 #another round of plots
@@ -609,19 +983,16 @@ comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, f
 
 #the next suggestion is to test for model redundancy by making a bunch of differently ordered models and seeing if the last variable is still significant
 model1 = lm(ilr(Y) ~ X2 * X1)
-anova(model1) #different significant results
-anova(fullModel, model1) #exactly the same zapparently
+anova(model1)
+anova(fullModel, model1) #exactly the same
 
 
-
-
-
-#   MODEL 3: Opt x100s   ###############################################
+#   MODEL 3: Day 14 x1000s #########################################
 ##### Univariate Stats 101: Model Set-Up + Visualisation ###########
 #Defining the independent and dependant variables
-Y = Opt_x100s_acomp_cleaned_centered #centered and cleaned composition from above
-X1 = Opt_x100s$Timepoint
-X2 = Opt_x100s$Treatment #no need for temp-treat, as it is subsetted
+Y = Day14_x1000s_acomp_cleaned_centered #centered and cleaned composition from above
+X1 = Day14_x1000s$TempTreat
+X2 = Day14_x1000s$Treatment #no need for temp-treat, as it is subsetted
 
 #convert these to factors (and check their orders) if needed
 X1 <- as.factor(X1)
@@ -642,88 +1013,59 @@ text(5, 7, keyword)
 #plotting the composition and color-coding/shape-coding by the factors
 opar = par(xpd=NA,no.readonly=TRUE)
 plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
-                            "#629cc4",
-                            "#f4777f",
-                            "#93003a")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+                            "green",
+                            "#f4777f")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
 legend(x=0.85,y=0.65,abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
 legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
-                                                                       "#629cc4",
-                                                                       "#f4777f",
-                                                                       "#93003a"),yjust=0) #legend for X1
-title("Opt Treatment (x100s)",outer=TRUE,line=-1)
+                                                                       "green",
+                                                                       "#f4777f"),yjust=0) #legend for X1
+title("Day 14 (x1000s)",outer=TRUE,line=-1)
+#its an interesting graph, but subsetting it by day within cold might look more interesting...
 
+------------
+  
+  ##### SUBSETTING BY DAY GRAPH SIDETRACK (TO BE REVISED)########
 
-#### SUBSETTING BY DAY GRAPH SIDETRACK ##########
+#Cold: 
+Cold_Y = Y[X1 == "Cold"] #copilot suggestion (thank u)
+Cold_X1 = X1[X1 == "Cold"]
+Cold_X2 = X2[X1 == "Cold"]
 
-#subsetting by day (tester section)
-Sub_Y = Y[X1 == "7"] #copilot suggestion
-Sub_Y #that should not have worked in my brain, but ok
-Sub_X1 = X1[X1 == "7"]
-Sub_X1
-Sub_X2 = X2[X1 == "7"]
-Sub_X2 #manually check this one later
+#Fluc: 
+Fluc_Y = Y[X1 == "Fluc"] 
+Fluc_X1 = X1[X1 == "Fluc"]
+Fluc_X2 = X2[X1 == "Fluc"]
 
-#more tester section
-plot(Sub_Y,col=c("#0041b9", "black","red", "green")[Sub_X1]) #now its only doing the color corresponding to 7, very good
-plot(Sub_Y, pch=c(1,3)[Sub_X2])
-legend(x=0.85,y=0.65,abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3)) #legend for X3
-title("Day 7, Opt Temp",outer=TRUE,line=-1)
+#Opt: 
+Opt_Y = Y[X1 == "Opt"] 
+Opt_X1 = X1[X1 == "Opt"]
+Opt_X2 = X2[X1 == "Opt"]
 
-
-
-#Day 2: 
-Day2_Y = Y[X1 == "2"] #copilot suggestion (thank u)
-Day2_X1 = X1[X1 == "2"]
-Day2_X2 = X2[X1 == "2"]
-
-#Day 7: 
-Day7_Y = Y[X1 == "7"] 
-Day7_X1 = X1[X1 == "7"]
-Day7_X2 = X2[X1 == "7"]
-
-#Day 14: 
-Day14_Y = Y[X1 == "14"] 
-Day14_X1 = X1[X1 == "14"]
-Day14_X2 = X2[X1 == "14"]
-
-#Day 21
-Day21_Y = Y[X1 == "21"] 
-Day21_X1 = X1[X1 == "21"]
-Day21_X2 = X2[X1 == "21"]
-
-#panel the graph view to show me four graphs at a time
-par(mfrow=c(2,2))
+#panel the graph view to show me three graphs at a time
+par(mfrow=c(1,1))
 
 #plot no. 1
-plot(Day2_Y, pch=c(1,3)[Day2_X2], col = c("blue", "red")[Day2_X2])
+plot(Cold_Y, pch=c(1,3)[Cold_X2], col = c("blue", "red")[Cold_X2])
+text(locator(1),"Day 14, Cold Temp (x1000s)")
 #plot no. 2
-plot(Day7_Y, pch=c(1,3)[Day7_X2], col = c("blue", "red")[Day7_X2])
+plot(Fluc_Y, pch=c(1,3)[Fluc_X2], col = c("blue", "red")[Fluc_X2])
+text(locator(1),"Day 14, Fluc Temp (x1000s)")
 #plot no. 3
-plot(Day14_Y, pch=c(1,3)[Day14_X2], col = c("blue", "red")[Day14_X2])
-#plot no. 4
-plot(Day21_Y, pch=c(1,3)[Day21_X2], col = c("blue", "red")[Day21_X2])
+plot(Opt_Y, pch=c(1,3)[Opt_X2], col = c("blue", "red")[Opt_X2])
+text(locator(1),"Day 14, Opt Temp (x1000s)")
 #Extras
 legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
-text(locator(1), "Day 2", col = "black")
-text(locator(1), "Day 7", col = "black")
-text(locator(1), "Day 14", col = "black")
-text(locator(1), "Day 21", col = "black")
-text(locator(1), "Change in BC composition over time (Opt Temp, x100s)")
-
-
-boxplot(Y,X3,notch=TRUE) #boxplot of the data
-title("Composition against ...",outer=TRUE,line=-1)
 
 
 
-#### Univariate Stats 102: Model Making + ANOVAs #####
+##### Univariate Stats 102: Model Making + ANOVAs #####
 #e.g:
 #setting the contrasts
 contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
 
-fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = day * treatment
+fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = temp * treatment
 coef(fullModel) #parameters
-anova(fullModel)
+anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
 
@@ -737,14 +1079,6 @@ vcov(model) #variance-covariance matrix
 (coefs <- ilrInv(coef(fullModel),orig=Y)) #backtransforming the coefficients
 barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
 
-
-## PLOTTING the models
-#with one of the following
-#Looking at the model visually
-comp_ANOVA_plots_4(fullModel, Y, X1, "fullModel") #for 2 levels, for example
-comp_ANOVA_plots_2(fullModel, Y, X2, "fullModel") #for 2 levels, for example
-# A variable may be removed from the model if the confidence ellipse around its parameter always contains the barycenter of the composition.
-#gonna have to update this code cause I am getting six ellipses
 
 
 ##### Univariate Stats 103: Model Diagnostics #####
@@ -753,16 +1087,16 @@ comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, f
 
 #the next suggestion is to test for model redundancy by making a bunch of differently ordered models and seeing if the last variable is still significant
 model1 = lm(ilr(Y) ~ X2 * X1)
-anova(model1) #same significant results
-anova(fullModel, model1) #exactly the same apparently
+anova(model1)
+anova(fullModel, model1) #exactly the same
 
 
-#   MODEL 4: Cold x1000s ###############################################
+#   MODEL 3: Day 21 x1000s #########################################
 ##### Univariate Stats 101: Model Set-Up + Visualisation ###########
 #Defining the independent and dependant variables
-Y = Cold_x1000s_acomp_cleaned_centered #centered and cleaned composition from above
-X1 = Cold_x1000s$Timepoint
-X2 = Cold_x1000s$Treatment #no need for temp-treat, as it is subsetted
+Y = Day21_x1000s_acomp_cleaned_centered #centered and cleaned composition from above
+X1 = Day21_x1000s$TempTreat
+X2 = Day21_x1000s$Treatment #no need for temp-treat, as it is subsetted
 
 #convert these to factors (and check their orders) if needed
 X1 <- as.factor(X1)
@@ -783,74 +1117,59 @@ text(5, 7, keyword)
 #plotting the composition and color-coding/shape-coding by the factors
 opar = par(xpd=NA,no.readonly=TRUE)
 plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
-                            "#629cc4",
-                            "#f4777f",
-                            "#93003a")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
-legend((locator(1)),abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
-legend((locator(1)),abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
-                                                                       "#629cc4",
-                                                                       "#f4777f",
-                                                                       "#93003a"),yjust=0) #legend for X1
-title("Cold Treatment (x1000s)",outer=TRUE,line=-1)
+                            "green",
+                            "#f4777f")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
+legend(x=0.85,y=0.65,abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
+legend(x=0.75,y=0.65,abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
+                                                                       "green",
+                                                                       "#f4777f"),yjust=0) #legend for X1
+title("Day 21 (x1000s)",outer=TRUE,line=-1)
+#its an interesting graph, but subsetting it by day within cold might look more interesting...
 
+------------
+  
+  ##### SUBSETTING BY DAY GRAPH SIDETRACK (TO BE REVISED)########
 
-##### SUBSETTING BY DAY GRAPH SIDETRACK ##########
+#Cold: 
+Cold_Y = Y[X1 == "Cold"] #copilot suggestion (thank u)
+Cold_X1 = X1[X1 == "Cold"]
+Cold_X2 = X2[X1 == "Cold"]
 
-#Day 2: 
-Day2_Y = Y[X1 == "2"] #copilot suggestion (thank u)
-Day2_X1 = X1[X1 == "2"]
-Day2_X2 = X2[X1 == "2"]
+#Fluc: 
+Fluc_Y = Y[X1 == "Fluc"] 
+Fluc_X1 = X1[X1 == "Fluc"]
+Fluc_X2 = X2[X1 == "Fluc"]
 
-#Day 7: 
-Day7_Y = Y[X1 == "7"] 
-Day7_X1 = X1[X1 == "7"]
-Day7_X2 = X2[X1 == "7"]
+#Opt: 
+Opt_Y = Y[X1 == "Opt"] 
+Opt_X1 = X1[X1 == "Opt"]
+Opt_X2 = X2[X1 == "Opt"]
 
-#Day 14: 
-Day14_Y = Y[X1 == "14"] 
-Day14_X1 = X1[X1 == "14"]
-Day14_X2 = X2[X1 == "14"]
-
-#Day 21
-Day21_Y = Y[X1 == "21"] 
-Day21_X1 = X1[X1 == "21"]
-Day21_X2 = X2[X1 == "21"]
-
+#panel the graph view to show me three graphs at a time
+par(mfrow=c(1,1))
 
 #plot no. 1
-plot(Day2_Y, pch=c(1,3)[Day2_X2], col = c("blue", "red")[Day2_X2])
-text(locator(1), "Day 2", col = "black")
-
+plot(Cold_Y, pch=c(1,3)[Cold_X2], col = c("blue", "red")[Cold_X2])
+text(locator(1),"Day 21, Cold Temp (x1000s)")
 #plot no. 2
-plot(Day7_Y, pch=c(1,3)[Day7_X2], col = c("blue", "red")[Day7_X2])
-text(locator(1), "Day 7", col = "black")
-
+plot(Fluc_Y, pch=c(1,3)[Fluc_X2], col = c("blue", "red")[Fluc_X2])
+text(locator(1),"Day 21, Fluc Temp (x1000s)")
 #plot no. 3
-plot(Day14_Y, pch=c(1,3)[Day14_X2], col = c("blue", "red")[Day14_X2])
-text(locator(1), "Day 14", col = "black")
-
-#plot no. 4
-plot(Day21_Y, pch=c(1,3)[Day21_X2], col = c("blue", "red")[Day21_X2])
-text(locator(1), "Day 21", col = "black")
-
+plot(Opt_Y, pch=c(1,3)[Opt_X2], col = c("blue", "red")[Opt_X2])
+text(locator(1),"Day 21, Opt Temp (x1000s)")
 #Extras
 legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
 
 
-
-
-
-
-
-
-#### Univariate Stats 102: Model Making + ANOVAs #####
+  
+##### Univariate Stats 102: Model Making + ANOVAs #####
 #e.g:
 #setting the contrasts
 contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
 
-fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = day * treatment
+fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = temp * treatment
 coef(fullModel) #parameters
-anova(fullModel)
+anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
 
@@ -865,255 +1184,12 @@ vcov(model) #variance-covariance matrix
 barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
 
 
-## PLOTTING the models
-#with one of the following
-#Looking at the model visually
-comp_ANOVA_plots_4(fullModel, Y, X1, "fullModel") #for 2 levels, for example
-comp_ANOVA_plots_2(fullModel, Y, X2, "fullModel") #for 2 levels, for example
-# A variable may be removed from the model if the confidence ellipse around its parameter always contains the barycenter of the composition.
-#gonna have to update this code cause I am getting six ellipses
-
 
 ##### Univariate Stats 103: Model Diagnostics #####
 #another round of plots
 comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, for example
 
-
-
-#   MODEL 5: Fluc x1000s ###############################################
-##### Univariate Stats 101: Model Set-Up + Visualisation ###########
-#Defining the independent and dependant variables
-Y = Fluc_x1000s_acomp_cleaned_centered #centered and cleaned composition from above
-X1 = Fluc_x1000s$Timepoint
-X2 = Fluc_x1000s$Treatment #no need for temp-treat, as it is subsetted
-
-#convert these to factors (and check their orders) if needed
-X1 <- as.factor(X1)
-X2 <- as.factor(X2)
-
-#checking the levels orders
-levels(X1)
-levels(X2) 
-
-dev.off()
-
-#Visual exploration of day
-plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
-text(5, 8, "Univariate Approaches")
-text(5, 7, keyword)
-
-
-#plotting the composition and color-coding/shape-coding by the factors
-opar = par(xpd=NA,no.readonly=TRUE)
-plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
-                            "#629cc4",
-                            "#f4777f",
-                            "#93003a")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
-legend((locator(1)),abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
-legend((locator(1)),abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
-                                                                      "#629cc4",
-                                                                      "#f4777f",
-                                                                      "#93003a"),yjust=0) #legend for X1
-title("Fluc Treatment (x1000s)",outer=TRUE,line=-1)
-
-
-##### SUBSETTING BY DAY GRAPH SIDETRACK ##########
-
-#Day 2: 
-Day2_Y = Y[X1 == "2"] #copilot suggestion (thank u)
-Day2_X1 = X1[X1 == "2"]
-Day2_X2 = X2[X1 == "2"]
-
-#Day 7: 
-Day7_Y = Y[X1 == "7"] 
-Day7_X1 = X1[X1 == "7"]
-Day7_X2 = X2[X1 == "7"]
-
-#Day 14: 
-Day14_Y = Y[X1 == "14"] 
-Day14_X1 = X1[X1 == "14"]
-Day14_X2 = X2[X1 == "14"]
-
-#Day 21
-Day21_Y = Y[X1 == "21"] 
-Day21_X1 = X1[X1 == "21"]
-Day21_X2 = X2[X1 == "21"]
-
-
-#plot no. 1
-plot(Day2_Y, pch=c(1,3)[Day2_X2], col = c("blue", "red")[Day2_X2])
-text(locator(1), "Day 2", col = "black")
-
-#plot no. 2
-plot(Day7_Y, pch=c(1,3)[Day7_X2], col = c("blue", "red")[Day7_X2])
-text(locator(1), "Day 7", col = "black")
-
-#plot no. 3
-plot(Day14_Y, pch=c(1,3)[Day14_X2], col = c("blue", "red")[Day14_X2])
-text(locator(1), "Day 14", col = "black")
-
-#plot no. 4
-plot(Day21_Y, pch=c(1,3)[Day21_X2], col = c("blue", "red")[Day21_X2])
-text(locator(1), "Day 21", col = "black")
-
-#Extras
-legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
-
-
-
-#### Univariate Stats 102: Model Making + ANOVAs #####
-#e.g:
-#setting the contrasts
-contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
-
-fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = day * treatment
-coef(fullModel) #parameters
-anova(fullModel)
-Anova(fullModel) #Type 2 anova
-#sig difference between days, not between treat and vax, no sign interaction
-
-##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
-(a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
-(b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
-#the above output shows the increase between levels of the treatment variable
-(mu = a + b) #mean
-(Sigma=ilrvar2clr(var(single_X_model))) #variance
-vcov(model) #variance-covariance matrix
-(coefs <- ilrInv(coef(fullModel),orig=Y)) #backtransforming the coefficients
-barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
-
-
-## PLOTTING the models
-#with one of the following
-#Looking at the model visually
-comp_ANOVA_plots_4(fullModel, Y, X1, "fullModel") #for 2 levels, for example
-comp_ANOVA_plots_2(fullModel, Y, X2, "fullModel") #for 2 levels, for example
-# A variable may be removed from the model if the confidence ellipse around its parameter always contains the barycenter of the composition.
-#gonna have to update this code cause I am getting six ellipses
-
-
-##### Univariate Stats 103: Model Diagnostics #####
-#another round of plots
-comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, for example
-
-
-
-
-#   MODEL 6: Opt x1000s ###############################################
-##### Univariate Stats 101: Model Set-Up + Visualisation ###########
-#Defining the independent and dependant variables
-Y = Opt_x1000s_acomp_cleaned_centered #centered and cleaned composition from above
-X1 = Opt_x1000s$Timepoint
-X2 = Opt_x1000s$Treatment #no need for temp-treat, as it is subsetted
-
-#convert these to factors (and check their orders) if needed
-X1 <- as.factor(X1)
-X2 <- as.factor(X2)
-
-#checking the levels orders
-levels(X1)
-levels(X2) 
-
-dev.off()
-
-#Visual exploration of day
-plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
-text(5, 8, "Univariate Approaches")
-text(5, 7, keyword)
-
-
-#plotting the composition and color-coding/shape-coding by the factors
-opar = par(xpd=NA,no.readonly=TRUE)
-plot(Y,pch=c(1,3)[X2],col=c("#0041b9",
-                            "#629cc4",
-                            "#f4777f",
-                            "#93003a")[X1]) #pch picks the symbol, col picks the color, matched it to the 2 variable X3 for pch and X1 for col with three levels
-legend((locator(1)),abbreviate(levels(X2), minlength=1), pch=c(1,3)) #legend for X3
-legend((locator(1)),abbreviate(levels(X1), minlength=1), pch=20,col=c("#0041b9",
-                                                                      "#629cc4",
-                                                                      "#f4777f",
-                                                                      "#93003a"),yjust=0) #legend for X1
-title("Opt Treatment (x1000s)",outer=TRUE,line=-1)
-
-
-##### SUBSETTING BY DAY GRAPH SIDETRACK ##########
-
-#Day 2: 
-Day2_Y = Y[X1 == "2"] #copilot suggestion (thank u)
-Day2_X1 = X1[X1 == "2"]
-Day2_X2 = X2[X1 == "2"]
-
-#Day 7: 
-Day7_Y = Y[X1 == "7"] 
-Day7_X1 = X1[X1 == "7"]
-Day7_X2 = X2[X1 == "7"]
-
-#Day 14: 
-Day14_Y = Y[X1 == "14"] 
-Day14_X1 = X1[X1 == "14"]
-Day14_X2 = X2[X1 == "14"]
-
-#Day 21
-Day21_Y = Y[X1 == "21"] 
-Day21_X1 = X1[X1 == "21"]
-Day21_X2 = X2[X1 == "21"]
-
-
-#plot no. 1
-plot(Day2_Y, pch=c(1,3)[Day2_X2], col = c("blue", "red")[Day2_X2])
-text(locator(1), "Day 2", col = "black")
-
-#plot no. 2
-plot(Day7_Y, pch=c(1,3)[Day7_X2], col = c("blue", "red")[Day7_X2])
-text(locator(1), "Day 7", col = "black")
-
-#plot no. 3
-plot(Day14_Y, pch=c(1,3)[Day14_X2], col = c("blue", "red")[Day14_X2])
-text(locator(1), "Day 14", col = "black")
-
-#plot no. 4
-plot(Day21_Y, pch=c(1,3)[Day21_X2], col = c("blue", "red")[Day21_X2])
-text(locator(1), "Day 21", col = "black")
-
-#Extras
-legend(locator(1),abbreviate(levels(Sub_X2), minlength=1), pch=c(1,3), col = c("blue", "red")) #legend for X3
-
-
-#### Univariate Stats 102: Model Making + ANOVAs #####
-#e.g:
-#setting the contrasts
-contrasts(X2) <- "contr.treatment" #using the vaccine variable for this
-
-fullModel = lm(ilr(Y) ~ X1 * X2) #Comp = day * treatment
-coef(fullModel) #parameters
-anova(fullModel)
-Anova(fullModel) #Type 2 anova
-#sig difference between days, not between treat and vax, no sign interaction
-
-##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
-(a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
-(b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
-#the above output shows the increase between levels of the treatment variable
-(mu = a + b) #mean
-(Sigma=ilrvar2clr(var(single_X_model))) #variance
-vcov(model) #variance-covariance matrix
-(coefs <- ilrInv(coef(fullModel),orig=Y)) #backtransforming the coefficients
-barplot(coefs,las=2,xlim=c(0,11)) #barplot of the coefficients
-
-
-## PLOTTING the models
-#with one of the following
-#Looking at the model visually
-comp_ANOVA_plots_4(fullModel, Y, X1, "fullModel") #for 2 levels, for example
-comp_ANOVA_plots_2(fullModel, Y, X2, "fullModel") #for 2 levels, for example
-# A variable may be removed from the model if the confidence ellipse around its parameter always contains the barycenter of the composition.
-#gonna have to update this code cause I am getting six ellipses
-
-
-##### Univariate Stats 103: Model Diagnostics #####
-#another round of plots
-comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, for example
-
-
-
-##### Then: Mulivariate Stats, if wanted #####
+#the next suggestion is to test for model redundancy by making a bunch of differently ordered models and seeing if the last variable is still significant
+model1 = lm(ilr(Y) ~ X2 * X1)
+anova(model1)
+anova(fullModel, model1) #exactly the same
