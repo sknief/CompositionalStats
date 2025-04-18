@@ -449,6 +449,15 @@ anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
 
+
+###NEW: Now with post-hoc testing
+# i need a multivariate equivalent of Tukeys test
+# Perform post-hoc tests
+post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+summary(post_hoc)
+
+
+
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
 (a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
 (b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
@@ -553,6 +562,15 @@ anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
 
+###NEW: Now with post-hoc testing
+# i need a multivariate equivalent of Tukeys test
+# Perform post-hoc tests
+post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+summary(post_hoc)
+
+
+
+
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
 (a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
 (b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
@@ -653,6 +671,14 @@ coef(fullModel) #parameters
 anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
+
+###NEW: Now with post-hoc testing
+# i need a multivariate equivalent of Tukeys test
+# Perform post-hoc tests
+post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+summary(post_hoc)
+
+
 
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
 (a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
@@ -760,6 +786,12 @@ anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
 
+###NEW: Now with post-hoc testing
+# i need a multivariate equivalent of Tukeys test
+# Perform post-hoc tests
+post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+summary(post_hoc)
+
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
 (a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
 (b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
@@ -857,6 +889,13 @@ coef(fullModel) #parameters
 anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
+
+
+###NEW: Now with post-hoc testing
+# i need a multivariate equivalent of Tukeys test
+# Perform post-hoc tests
+post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+summary(post_hoc)
 
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
 (a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
@@ -965,6 +1004,13 @@ anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
 
+
+###NEW: Now with post-hoc testing
+# i need a multivariate equivalent of Tukeys test
+# Perform post-hoc tests
+post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+summary(post_hoc)
+
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
 (a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
 (b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
@@ -1069,6 +1115,13 @@ anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
 
+
+###NEW: Now with post-hoc testing
+# i need a multivariate equivalent of Tukeys test
+# Perform post-hoc tests
+post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+summary(post_hoc)
+
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
 (a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
 (b = ilrInv(rbind(0,coef(single_X_model)[-1,]),orig=Y)) #backtransforming the slope? slash other constant
@@ -1172,6 +1225,12 @@ coef(fullModel) #parameters
 anova(fullModel) #Type 1 anova
 Anova(fullModel) #Type 2 anova
 #sig difference between days, not between treat and vax, no sign interaction
+
+###NEW: Now with post-hoc testing
+# i need a multivariate equivalent of Tukeys test
+# Perform post-hoc tests
+post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+summary(post_hoc)
 
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
 (a = ilrInv(coef(single_X_model)[1,],orig=Y)) #backtransforming the intercept
