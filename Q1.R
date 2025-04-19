@@ -463,7 +463,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+post_hoc <- emmeans(fullModel, pairwise ~ X1)
 summary(post_hoc)
 
 
@@ -594,7 +594,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+post_hoc <- emmeans(fullModel, pairwise ~ X1)
 summary(post_hoc)
 
 
@@ -745,7 +745,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+post_hoc <- emmeans(fullModel, pairwise ~ X1 | X2)
 summary(post_hoc)
 
 
@@ -883,7 +883,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+post_hoc <- emmeans(fullModel, pairwise ~ X1)
 summary(post_hoc)
 
 
