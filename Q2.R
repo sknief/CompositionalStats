@@ -549,7 +549,7 @@ text(locator(1), "Fluc", col = "black")
 text(locator(1), "Opt", col = "black")
 text(locator(1), "Change in BC composition across temperatures (Day 7, x100s)")
 
-par(mfrow=c(1,1)))
+par(mfrow=c(1,1))
   
   ##### Univariate Stats 102: Model Making + ANOVAs #####
 #e.g:
