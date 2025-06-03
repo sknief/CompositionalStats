@@ -284,6 +284,8 @@ levels(DATA$Timepoint)
 DATA$TempTreat <- as.factor(DATA$TempTreat)
 levels(DATA$TempTreat)
 
+DATA <- DATA[1:13] 
+
 Cold_Data = subset(DATA, DATA$TempTreat == "Cold")
 Cold_x100s = Cold_Data[c(1:6, 11:13)]
 Cold_x1000s = Cold_Data[1:10]
@@ -495,6 +497,69 @@ comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, f
 model1 = lm(ilr(Y) ~ X2 * X1)
 anova(model1)
 anova(fullModel, model1) #exactly the same
+
+
+
+
+
+#BAr graphs attempts
+mean(Y[X1 == "2" & X2 == "Vax"])[1] #mean of day 2, vaxxed groups
+
+#make a dataset of the mean values per day and per treatment
+
+# got it to work, had to remove the return mean data bit of the for loop
+mean_comp_bargraaphs <- function(Y, X1, X2) {
+  mean_data <- data.frame(
+    Day = rep(levels(X1), each = length(levels(X2))),
+    Treatment = rep(levels(X2), times = length(levels(X1))))
+  
+  #for each loop
+  for(i in 1:nrow(mean_data)) {
+    mean_data$Granu[i] = mean(Y[X1 == mean_data[i,1] & X2 == mean_data[i,2]])[1]
+    mean_data$Lymph[i] = mean(Y[X1 == mean_data[i,1] & X2 == mean_data[i,2]])[2]
+    mean_data$Mono[i] = mean(Y[X1 == mean_data[i,1] & X2 == mean_data[i,2]])[3]
+    }
+
+  assign("Tester", mean_data, envir = .GlobalEnv) # assign the cleaned object to a new variable name
+  return(mean_data)
+}
+
+mean_comp_bargraaphs(Y, X1, X2)
+
+Tester$Factorial <- paste0(Tester$Day, "_", Tester$Treatment) #make a new variable that combines the two factors
+
+Tester_Acomp <- acomp(Tester[,c("Granu", "Lymph", "Mono")]) #make a composition of the mean data
+Tester_Acomp
+
+#money maker
+barplot(Tester_Acomp, beside = FALSE, col = c( '#fee0d2','#fc9272','#de2d26'), 
+        names.arg = c("D2 Con.", "D2 Chal.", "D7 Con.", "D7 Chal.", "D14 Con.", "D14 Chal.", "D21 Con.", "D21 Chal."), las = 2, ylim = c(0, 1), 
+        main = "Mean Composition by Day and Treatment (CC WBC)", ylab = "Relative Contribution",
+        )
+
+
+#cleaner example provided by copilot
+mean_comp_bargraphs <- function(Y, X1, X2) {
+  mean_data <- data.frame(
+    Day = rep(levels(X1), each = length(levels(X2))),
+    Treatment = rep(levels(X2), times = length(levels(X1))),
+    Granu = NA,
+    Lymph = NA,
+    Mono = NA
+  )
+  
+  for(i in 1:nrow(mean_data)) {
+    group_means <- mean(Y[X1 == mean_data$Day[i] & X2 == mean_data$Treatment[i], ])
+    mean_data$Granu[i] <- group_means[1]
+    mean_data$Lymph[i] <- group_means[2]
+    mean_data$Mono[i]  <- group_means[3]
+  }
+  
+  return(mean_data)
+}
+
+mean_comp_bargraphs(Y, X1, X2)
+#both output the same nice, 
 
 
 
@@ -745,7 +810,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X1 | X2)
+post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
 summary(post_hoc)
 
 
@@ -1012,7 +1077,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+post_hoc <- emmeans(fullModel, pairwise ~ X1)
 summary(post_hoc)
 
 
@@ -1139,7 +1204,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+post_hoc <- emmeans(fullModel, pairwise ~ X1)
 summary(post_hoc)
 
 

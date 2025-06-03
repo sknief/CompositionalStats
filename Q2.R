@@ -18,7 +18,7 @@ library(MASS)
 library(plyr)
 library(dplyr)
 library(car)
-
+library(arsenal)
 #### Define Functions ####
 
 # this one explores the raw acomp and its three main transformations
@@ -789,7 +789,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+post_hoc <- emmeans(fullModel, pairwise ~ X1)
 summary(post_hoc)
 
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
@@ -894,7 +894,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+post_hoc <- emmeans(fullModel, pairwise ~ X1)
 summary(post_hoc)
 
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
@@ -1230,7 +1230,7 @@ Anova(fullModel) #Type 2 anova
 ###NEW: Now with post-hoc testing
 # i need a multivariate equivalent of Tukeys test
 # Perform post-hoc tests
-post_hoc <- emmeans(fullModel, pairwise ~ X2 | X1)
+post_hoc <- emmeans(fullModel, pairwise ~ X1)
 summary(post_hoc)
 
 ##### OPTIONAL CODE: to get the parameters of the model made in OG acomp scale #####
