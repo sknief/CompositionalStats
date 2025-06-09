@@ -1253,3 +1253,7 @@ comp_ANOVA_diag(fullModel, Y, X1, "fullModel") #for X3 as a grouping variable, f
 model1 = lm(ilr(Y) ~ X2 * X1)
 anova(model1)
 anova(fullModel, model1) #exactly the same
+
+
+
+#hello world
